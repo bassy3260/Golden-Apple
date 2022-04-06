@@ -3,10 +3,27 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/A/AndroidStudioProjects/AAA/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.243" />
         <entry key="..\:/Users/A/AndroidStudioProjects/AAA/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1575" />
         <entry key="..\:/Users/A/AndroidStudioProjects/AAA/app/src/main/res/drawable/splash_base.xml" value="0.178" />
         <entry key="..\:/Users/A/AndroidStudioProjects/AAA/app/src/main/res/layout/activity_main.xml" value="0.18333333333333332" />
+        <entry key="..\:/Users/A/AndroidStudioProjects/AAA/app/src/main/res/layout/activity_signup.xml" value="0.2980072463768116" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/drawable/buttonshapewhitebg.xml" value="0.1" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/drawable/ic_email_white_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/drawable/ic_lock_white_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/drawable/ic_name.xml" value="0.179" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/drawable/item_comunity.xml" value="0.1" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/drawable/splash_base.xml" value="0.1" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/layout/activity_bottom.xml" value="0.10258358662613981" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/layout/activity_login.xml" value="0.22" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/layout/activity_potato.xml" value="0.10258358662613981" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/layout/activity_signup.xml" value="0.1" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/layout/activity_signup2.xml" value="0.1" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/layout/frag1.xml" value="0.33242753623188404" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/layout/frag4.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/layout/sign2.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/menu/menu.xml" value="0.10833333333333334" />
+        <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/xml/file_paths.xml" value="0.10258358662613981" />
       </map>
     </option>
   </component>
