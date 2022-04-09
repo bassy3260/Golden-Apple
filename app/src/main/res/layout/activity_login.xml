@@ -101,10 +101,11 @@
             android:theme="@style/EditScreenTextInputLayoutStyle">
 
             <EditText
+                android:id="@+id/loginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawablePadding="16dp"
                 android:drawableEnd="@drawable/ic_email_white_24dp"
+                android:drawablePadding="16dp"
                 android:fontFamily="@font/calibri"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
@@ -120,10 +121,11 @@
             android:theme="@style/EditScreenTextInputLayoutStyle">
 
             <EditText
+                android:id="@+id/loginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawablePadding="16dp"
                 android:drawableEnd="@drawable/ic_lock_white_24dp"
+                android:drawablePadding="16dp"
                 android:fontFamily="@font/calibri"
                 android:hint="Password"
                 android:inputType="textPassword"

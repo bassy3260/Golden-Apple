@@ -1,5 +1,6 @@
 package com.aaa.aaa;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -70,18 +72,48 @@ public class Frag1 extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0){
-            //requestCode가 0일때 Bundle로 사진 데이터 받아서 비트맵으로 전환 후 이미지에 적용
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            img.setImageBitmap(imageBitmap);
+        switch (requestCode) {
+            // 사진업로드 이벤트
+            case 0:
+                // 사진 선택
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        // Image 상대경로를 가져온다
+                        Bundle extras = data.getExtras();
+                        Bitmap imageBitmap = (Bitmap) extras.get("data");
+                        img.setImageBitmap(imageBitmap);
+                    } catch (Exception e) {
+                        // 대기메시지 종료
+                    }
+                } // 사진 선택 취소
+                else if (resultCode == Activity.RESULT_CANCELED) {
 
-        }else if (requestCode == 1){
-            //requestCode가 1일때 선택된 이미지 값을  Uri로 받아서 이미지에 적용
-            Uri uri = data.getData();
-            img.setImageURI(uri);
+                }
+                break;
+            case 1:
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        // Image 상대경로를 가져온다
+                        Uri uri = data.getData();
+                        img.setImageURI(uri);
+                        break;
+                    } catch (Exception e) {
+                        // 대기메시지 종료
+                    }
+                } // 사진 선택 취소
+                else if (resultCode == Activity.RESULT_CANCELED) {
+
+                }
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            ((BottomActivity) activity).setActionBarTitle("품질 판별");
         }
     }
 }

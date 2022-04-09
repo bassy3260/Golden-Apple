@@ -55,6 +55,7 @@
         <activity android:name=".PotatotableActivity"/>
         <activity android:name=".PeartableActivity"/>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".mypageActivity"/>
 
         <provider
             android:authorities="com.june0122.criminalintent.fileprovider"
