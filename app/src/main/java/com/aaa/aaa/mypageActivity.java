@@ -1,3 +1,4 @@
+/**마이페이지 액티비티**/
 package com.aaa.aaa;
 
 import android.content.Intent;
@@ -20,12 +21,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.InputStream;
 
 public class mypageActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    Button logout, profile_pic;
+    Button logout;
     private View view;
     private FirebaseStorage storage;
     private static final int REQUEST_CODE = 0;
