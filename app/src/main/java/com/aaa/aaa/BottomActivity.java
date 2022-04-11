@@ -88,7 +88,7 @@ public class BottomActivity extends AppCompatActivity {
         }
 
     }
-    //액션바 타이틀
+    //액션바 타이틀 설정
     public void setActionBarTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
