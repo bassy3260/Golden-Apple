@@ -27,11 +27,7 @@
         </activity>
 
         <activity android:name=".BottomActivity"/>
-
-
-        <activity
-            android:name=".LoginActivity"/>
-
+        <activity android:name=".LoginActivity"/>
         <activity android:name=".Signup"/>
         <activity android:name=".RadishActivity"/>
         <activity android:name=".NapaActivity"/>
@@ -56,7 +52,10 @@
         <activity android:name=".PeartableActivity"/>
         <activity android:name=".MainActivity"/>
         <activity android:name=".mypageActivity"/>
-
+        <activity
+            android:name=".writeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            </activity>
         <provider
             android:authorities="com.june0122.criminalintent.fileprovider"
             android:name="androidx.core.content.FileProvider"

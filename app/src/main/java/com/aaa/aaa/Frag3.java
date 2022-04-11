@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Frag3 extends Fragment {
@@ -22,25 +23,39 @@ public class Frag3 extends Fragment {
     private View view;
 
     private Button mypage;
+    FloatingActionButton write;
     private FirebaseAuth firebaseAuth;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag3, container, false);
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true); //메뉴 보이기
 
+        //글쓰기 화면으로 이동
+        write= (FloatingActionButton) view.findViewById(R.id.writeButton);
+
+        write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),writeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
+    //메뉴 설정 함수
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.community_menu, menu);
     }
+    //메뉴 버튼 함수
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu_mypage:
+            case R.id.menu_write:
                 Intent intent = new Intent(getActivity(), mypageActivity.class);
                 startActivity(intent);
                 break;
@@ -48,7 +63,9 @@ public class Frag3 extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-    @Override
+
+    //액션바 타이틀 설정 함수
+   @Override
     public void onResume() {
         super.onResume();
         FragmentActivity activity = getActivity();
