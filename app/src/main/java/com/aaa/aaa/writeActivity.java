@@ -75,7 +75,7 @@ public class writeActivity extends AppCompatActivity {
     }
 
 
-
+    //토스트메시지 함수
     public void toast(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
