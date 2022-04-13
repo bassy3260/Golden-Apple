@@ -56,7 +56,7 @@ public class Frag3 extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_write:
-                Intent intent = new Intent(getActivity(), mypageActivity.class);
+                Intent intent = new Intent(getActivity(), postActivity.class);
                 startActivity(intent);
                 break;
 

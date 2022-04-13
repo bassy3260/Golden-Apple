@@ -1,21 +1,22 @@
 package com.aaa.aaa;
 
 public class writeInfo {
-    String category
+    String category;
     String title;
     String uid;
     String date;
     String time;
     String content;
 
-    public writeInfo(String Category,String title, String uid, String date,
+    public writeInfo(String category,String title, String uid, String date,
                      String time, String content) {
+        this.category=category;
         this.title = title;
         this.content = content;
         this.time = time;
         this.date = date;
         this.uid = uid;
-        this.category=category;
+
     }
 
     public String getDate() {

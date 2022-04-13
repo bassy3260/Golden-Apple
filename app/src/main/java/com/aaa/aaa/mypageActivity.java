@@ -108,6 +108,8 @@ public class mypageActivity extends AppCompatActivity {
         }
     }
 
+
+
     public void toast(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }

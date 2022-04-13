@@ -3,7 +3,6 @@
  **/
 package com.aaa.aaa;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.Menu;
@@ -16,12 +15,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -32,9 +35,9 @@ import java.util.Locale;
 
 public class writeActivity extends AppCompatActivity {
     Toolbar writeToolbar;
-    FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
     String format_yyyyMMdd = "yyyy/MM/dd";
-    String format_time = "hh:mm";
+    String format_hhmm = "hh:mm";
     private Date currentTime;
     FirebaseUser user;
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class writeActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        firebaseAuth = FirebaseAuth.getInstance();
 
         // Spinner
         Spinner categorySpinner = (Spinner) findViewById(R.id.category_spinner);
@@ -82,7 +85,8 @@ public class writeActivity extends AppCompatActivity {
                 break;
             case R.id.menu_write:
                 // User chose the "Settings" item, show the app settings UI...
-                finish();
+
+                getUserinf();
                 break;
         }
         return true;
@@ -92,20 +96,36 @@ public class writeActivity extends AppCompatActivity {
     //멤버 정보 가져오기
     private void getUserinf(){
         user= firebaseAuth.getCurrentUser();
-        final String category=((Spinner)findViewById(R.id.category_spinner)).getSelectedItem().toString();
-        final String u_id=user.getUid();
-        final String title=((EditText)findViewById(R.id.titleEditText)).getText().toString().trim();
-        final String content=((EditText)findViewById(R.id.contentEditText)).getText().toString().trim();
+        Spinner spinner = (Spinner)findViewById(R.id.category_spinner);
+        String category = spinner.getSelectedItem().toString();
+        String u_id=user.getUid();
+        String title=((EditText)findViewById(R.id.titleText)).getText().toString().trim();
+        String content=((EditText)findViewById(R.id.commentText)).getText().toString().trim();
         //시간 가져오기
         currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat format_date=new SimpleDateFormat(format_yyyyMMdd, Locale.getDefault());
-        SimpleDateFormat format_time=new SimpleDateFormat(format_yyyyMMdd, Locale.getDefault());
-        final String time=format_date.format(currentTime);
-        final String date=format_time.format(currentTime);
+        SimpleDateFormat format_time=new SimpleDateFormat(format_hhmm, Locale.getDefault());
+        String time=format_date.format(currentTime);
+        String date=format_time.format(currentTime);
 
-        if(title.length()>0&&content.length()>0){
-            writeInfo writeInfo=new writeInfo(category,u_id,title,content,time,date);
-
+        if(title.length()>0&&content.length()>0) {
+            writeInfo writeInfo = new writeInfo( category,title, u_id, date,
+                    time,content);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("post").add(writeInfo)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            toast("글쓰기 등록을 성공하였습니다.");
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            toast("글쓰기 등록을 실패하였습니다");
+                        }
+                    });
         }
         else if(title.length()<0){
             toast("제목을 입력해주세요.");
@@ -120,9 +140,6 @@ public class writeActivity extends AppCompatActivity {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
-    public void uploader(writeInfo writeInfo){
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
-        db.collection("post").document()
-    }
+
 
 }
