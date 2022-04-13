@@ -99,6 +99,7 @@ public class Signup extends AppCompatActivity {
             } else if (password.equals(passwordtest) == false) {
                 toast("비밀번호가 맞지 않습니다.");
                 return;
+                //전화번호에 숫자만 있지 않을 시
             } else if (phone_number.matches("[+-]?\\d*(\\.\\d+)?") == false) {
                 toast("전화번호는 숫자만 입력 해 주세요.");
             }
