@@ -54,6 +54,7 @@ public class Frag3 extends Fragment {
     //메뉴 버튼 함수
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //글쓰기 버튼 함수
         switch (item.getItemId()){
             case R.id.menu_write:
                 Intent intent = new Intent(getActivity(), postActivity.class);
