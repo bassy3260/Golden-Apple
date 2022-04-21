@@ -1,15 +1,17 @@
 package com.aaa.aaa;
 
+import java.util.ArrayList;
+
 public class writeInfo {
     String category;
     String title;
     String uid;
     String date;
     String time;
-    String content;
+    private ArrayList<String> content;
 
     public writeInfo(String category,String title, String uid, String date,
-                     String time, String content) {
+                     String time, ArrayList<String> content) {
         this.category=category;
         this.title = title;
         this.content = content;
@@ -27,7 +29,7 @@ public class writeInfo {
         return time;
     }
 
-    public String getContent() {
+    public ArrayList<String> getContent() {
         return content;
     }
 
@@ -43,7 +45,7 @@ public class writeInfo {
         return category;
     }
 
-    public void setContent(String content) {
+    public void setContent(ArrayList<String> content) {
         this.content = content;
     }
 
