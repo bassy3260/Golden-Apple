@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -70,6 +72,7 @@ public class writeActivity extends AppCompatActivity {
     String format_yyyyMMdd = "yyyy/MM/dd";
     String format_hhmm = "hh:mm";
     private Date currentTime;
+    private RelativeLayout buttonsBackgroundLayout;
     FirebaseUser user;
     Button image;
 
@@ -91,7 +94,8 @@ public class writeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
+        buttonsBackgroundLayout=findViewById(R.id.buttonsBackgroundLayout);
+        buttonsBackgroundLayout.setOnClickListener(onClickListener);
         // Spinner
         Spinner categorySpinner = (Spinner) findViewById(R.id.category_spinner);
         ArrayAdapter categoryAdapter = ArrayAdapter.createFromResource(this,
@@ -111,6 +115,17 @@ public class writeActivity extends AppCompatActivity {
         });
     }
 
+    View.OnClickListener onClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v){
+            switch(v.getId()){
+                case R.id.buttonsBackgroundLayout:
+                    if(buttonsBackgroundLayout.getVisibility()==View.VISIBLE){
+                        buttonsBackgroundLayout.setVisibility(View.GONE);
+                    }
+            }
+        }
+    };
 
     //추가된 소스, ToolBar에 menu.xml을 인플레이트함
     @Override
@@ -153,6 +168,15 @@ public class writeActivity extends AppCompatActivity {
                             ViewGroup.LayoutParams.WRAP_CONTENT);
                     ImageView imageView = new ImageView(writeActivity.this);
                     imageView.setLayoutParams(layoutParams);
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            buttonsBackgroundLayout.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    final String[] imageEdit={"이미지 수정","이미지 삭제"};
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
                     InputStream in = getContentResolver().openInputStream(data.getData());
                     Bitmap img = BitmapFactory.decodeStream(in);
                     in.close();
