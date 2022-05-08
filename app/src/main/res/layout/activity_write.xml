@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,25 +67,31 @@
                     android:background="#16000000" />
 
                 <LinearLayout
-                    android:id="@+id/contentsView"
+                    android:id="@+id/contentsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/commentText"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@null"
-                        android:ems="10"
-                        android:gravity="top"
-                        android:hint="내용"
-                        android:inputType="textMultiLine"
-                        android:textColorHint="#969696" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
+                        <EditText
+                            android:id="@+id/contentsEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@null"
+                            android:ems="10"
+                            android:gravity="top"
+                            android:hint="내용"
+                            android:inputType="textMultiLine"
+                            android:textColorHint="#969696" />
+                    </LinearLayout>
 
                 </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
 

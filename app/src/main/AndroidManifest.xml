@@ -16,6 +16,12 @@
         android:theme="@style/Theme.AAA"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".community_trade"
+            android:exported="false" />
+        <activity
+            android:name=".community_QnA"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -52,8 +58,9 @@
         <activity android:name=".mypageActivity" />
         <activity
             android:name=".writeActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".postActivity" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.june0122.criminalintent.fileprovider"

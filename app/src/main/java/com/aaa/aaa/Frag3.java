@@ -1,5 +1,7 @@
 package com.aaa.aaa;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,26 +16,44 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 public class Frag3 extends Fragment {
 
     private View view;
 
+    ViewPager mViewPager;
+
     private Button mypage;
     FloatingActionButton write;
     private FirebaseAuth firebaseAuth;
+    communityPagerAdapter adapter;
+    private FragmentActivity myContext;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag3, container, false);
         setHasOptionsMenu(true); //메뉴 보이기
-
+        mViewPager = (ViewPager) view.findViewById(R.id.categoryViewpager);
         //글쓰기 화면으로 이동
         write= (FloatingActionButton) view.findViewById(R.id.writeButton);
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+
+
+
+        FragmentManager fragManager = myContext.getFragmentManager();
+        adapter= new communityPagerAdapter(getChildFragmentManager(),5);
+        mViewPager = (ViewPager) view.findViewById(R.id.categoryViewpager);
+
+        mViewPager.setAdapter(adapter);
+
 
         write.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,8 +64,14 @@ public class Frag3 extends Fragment {
             }
         });
         return view;
+
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        myContext=(FragmentActivity) activity;
+        super.onAttach(activity);
+    }
     //메뉴 설정 함수
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
