@@ -53,7 +53,7 @@ public class Frag3 extends Fragment {
         mViewPager = (ViewPager) view.findViewById(R.id.categoryViewpager);
 
         mViewPager.setAdapter(adapter);
-
+        mViewPager.setSaveEnabled(false);
 
         write.setOnClickListener(new View.OnClickListener() {
             @Override

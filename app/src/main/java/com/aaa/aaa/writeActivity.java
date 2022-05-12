@@ -55,7 +55,7 @@ public class writeActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     String format_yyyyMMdd = "yyyy/MM/dd";
     String format_hhmm = "hh:mm";
-    private Date currentTime;
+    private Date created;
     private RelativeLayout buttonsBackgroundLayout;
     FirebaseUser user;
     Button image;
@@ -131,7 +131,7 @@ public class writeActivity extends AppCompatActivity {
                     partList.get(parent.indexOfChild(selectedView)-1);
                     parent.removeView((View) selectedImageView.getParent());
                     buttonsBackgroundLayout.setVisibility(View.GONE);
-
+                    partList.remove(checked);
 
                     break;
             }
@@ -256,11 +256,11 @@ public class writeActivity extends AppCompatActivity {
         String category = spinner.getSelectedItem().toString();
         String u_id = user.getUid();
         //시간 가져오기
-        currentTime = Calendar.getInstance().getTime();
+        created = Calendar.getInstance().getTime();
         SimpleDateFormat format_date = new SimpleDateFormat(format_yyyyMMdd, Locale.getDefault());
         SimpleDateFormat format_time = new SimpleDateFormat(format_hhmm, Locale.getDefault());
-        String time = format_date.format(currentTime);
-        String date = format_time.format(currentTime);
+        String time = format_date.format(created );
+        String date = format_time.format(created );
 
         if (title.length() > 0) {
             FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
@@ -306,8 +306,7 @@ public class writeActivity extends AppCompatActivity {
                                             successCount++;
                                             Log.e("로그", contentList.get(1));
                                             if (partList.size() == successCount) {
-                                                writeInfo writeInfo = new writeInfo(category, title, u_id, date,
-                                                        time, contentList);
+                                                writeInfo writeInfo = new writeInfo(category, title, u_id, created, contentList);
                                                 postRef.set(writeInfo)
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
@@ -335,8 +334,7 @@ public class writeActivity extends AppCompatActivity {
 
             }
             if(partList.size()==0){
-                writeInfo writeInfo = new writeInfo(category, title, u_id, date,
-                        time, contentList);
+                writeInfo writeInfo = new writeInfo(category, title, u_id, created, contentList);
                 postRef.set(writeInfo)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

@@ -25,13 +25,6 @@
         <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/layout/sign2.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/menu/menu.xml" value="0.10833333333333334" />
         <entry key="..\:/Users/A/Desktop/AAA/AAA/app/src/main/res/xml/file_paths.xml" value="0.10258358662613981" />
-        <entry key="..\:/Users/user/Documents/WSY/Agriculturalproducts/app/src/main/res/layout/activity_community_donation.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/WSY/Agriculturalproducts/app/src/main/res/layout/activity_community_information.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/WSY/Agriculturalproducts/app/src/main/res/layout/activity_community_qn.xml" value="0.21422101449275363" />
-        <entry key="..\:/Users/user/Documents/WSY/Agriculturalproducts/app/src/main/res/layout/activity_community_recipe.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/WSY/Agriculturalproducts/app/src/main/res/layout/activity_community_trade.xml" value="0.21422101449275363" />
-        <entry key="..\:/Users/user/Documents/WSY/Agriculturalproducts/app/src/main/res/layout/activity_write.xml" value="0.2" />
-        <entry key="..\:/Users/user/Documents/WSY/Agriculturalproducts/app/src/main/res/layout/frag3.xml" value="0.21422101449275363" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/drawable/box_login.xml" value="0.1195" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/drawable/close_button.xml" value="0.1195" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/drawable/close_buttonxml.xml" value="0.2275" />
@@ -39,19 +32,23 @@
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/drawable/ic_name.xml" value="0.1195" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/drawable/item_camera.xml" value="0.1195" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/drawable/item_comunity.xml" value="0.1195" />
+        <entry key="..\:/project/Agriculturalproducts/app/src/main/res/drawable/layout_border.xml" value="0.181" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/drawable/write_circle.xml" value="0.1235" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_bottom.xml" value="0.1125" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_cabbage.xml" value="0.1125" />
+        <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_community_qn.xml" value="0.152" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_login.xml" value="0.1140625" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_main.xml" value="0.15364583333333334" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_mypage.xml" value="0.176" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_persimtable.xml" value="0.17239583333333333" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_post.xml" value="0.4" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_post2.xml" value="0.15416666666666667" />
+        <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_postpage.xml" value="0.4" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_radishtable.xml" value="0.1" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_signup.xml" value="0.1" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_splash.xml" value="0.1" />
-        <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_write.xml" value="0.264" />
+        <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/activity_write.xml" value="0.1" />
+        <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/community_list_view.xml" value="0.3390804597701149" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/community_menu.xml" value="0.1" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/content_post.xml" value="0.15416666666666667" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/layout/frag1.xml" value="0.1125" />
@@ -64,6 +61,7 @@
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/menu/community_menu.xml" value="0.1140625" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/menu/community_wriet.xml" value="0.2" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/menu/community_write.xml" value="0.25364583333333335" />
+        <entry key="..\:/project/Agriculturalproducts/app/src/main/res/menu/default_post_menu.xml" value="0.25364583333333335" />
         <entry key="..\:/project/Agriculturalproducts/app/src/main/res/menu/write_toolbar.xml" value="0.2" />
       </map>
     </option>

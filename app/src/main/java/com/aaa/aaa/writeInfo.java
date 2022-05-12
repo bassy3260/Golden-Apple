@@ -1,71 +1,61 @@
 package com.aaa.aaa;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class writeInfo {
     String category;
     String title;
     String uid;
-    String date;
-    String time;
+    Date created;
     private ArrayList<String> content;
 
-    public writeInfo(String category,String title, String uid, String date,
-                     String time, ArrayList<String> content) {
-        this.category=category;
+    public writeInfo(String category, String title, String uid, Date created, ArrayList<String> content) {
+        this.category = category;
         this.title = title;
-        this.content = content;
-        this.time = time;
-        this.date = date;
         this.uid = uid;
-
+        this.created = created;
+        this.content = content;
     }
 
-    public String getDate() {
-        return date;
+
+    public String getCategory() {
+        return category;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public ArrayList<String> getContent() {
-        return content;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setContent(ArrayList<String> content) {
-        this.content = content;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public ArrayList<String> getContent() {
+        return content;
+    }
+
+    public void setContent(ArrayList<String> content) {
+        this.content = content;
     }
 }
