@@ -249,8 +249,6 @@ public class writeActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         //타이틀
         final String title = ((EditText) findViewById(R.id.titleText)).getText().toString();
-        //글 내용
-        final String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();
         //스피너(카테고리)
         Spinner spinner = (Spinner) findViewById(R.id.category_spinner);
         String category = spinner.getSelectedItem().toString();
@@ -261,15 +259,16 @@ public class writeActivity extends AppCompatActivity {
         SimpleDateFormat format_time = new SimpleDateFormat(format_hhmm, Locale.getDefault());
         String time = format_date.format(created );
         String date = format_time.format(created );
-
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+        ArrayList<String> contentList = new ArrayList<>();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        StorageReference storageRef = storage.getReference();
+        final DocumentReference postRef = firebaseFirestore.collection("post").document();
+        String postkey=postRef.getId();
         if (title.length() > 0) {
-            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageReference = storage.getReference();
-            ArrayList<String> contentList = new ArrayList<>();
-            user = FirebaseAuth.getInstance().getCurrentUser();
-            StorageReference storageRef = storage.getReference();
-            final DocumentReference postRef = firebaseFirestore.collection("post").document();
+
             for (int i = 0; i < parent.getChildCount(); i++) {
                 LinearLayout linearLayout = (LinearLayout) parent.getChildAt(i);
                 for(int j=0;j<linearLayout.getChildCount();j++){
@@ -306,7 +305,8 @@ public class writeActivity extends AppCompatActivity {
                                             successCount++;
                                             Log.e("로그", contentList.get(1));
                                             if (partList.size() == successCount) {
-                                                writeInfo writeInfo = new writeInfo(category, title, u_id, created, contentList);
+
+                                                writeInfo writeInfo = new writeInfo(category, title, u_id, created, contentList,postkey);
                                                 postRef.set(writeInfo)
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
@@ -329,12 +329,13 @@ public class writeActivity extends AppCompatActivity {
                         } catch (Exception e) {
 
                         }
+                        partCount++;
                     }
                 }
 
             }
             if(partList.size()==0){
-                writeInfo writeInfo = new writeInfo(category, title, u_id, created, contentList);
+                writeInfo writeInfo = new writeInfo(category, title, u_id, created, contentList,postkey);
                 postRef.set(writeInfo)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

@@ -9,15 +9,16 @@ public class writeInfo {
     String uid;
     Date created;
     private ArrayList<String> content;
+    String postKey;
 
-    public writeInfo(String category, String title, String uid, Date created, ArrayList<String> content) {
+    public writeInfo(String category, String title, String uid, Date created, ArrayList<String> content, String postKey) {
         this.category = category;
         this.title = title;
         this.uid = uid;
         this.created = created;
         this.content = content;
+        this.postKey = postKey;
     }
-
 
     public String getCategory() {
         return category;
@@ -57,5 +58,13 @@ public class writeInfo {
 
     public void setContent(ArrayList<String> content) {
         this.content = content;
+    }
+
+    public String getPostKey() {
+        return postKey;
+    }
+
+    public void setPostKey(String postKey) {
+        this.postKey = postKey;
     }
 }

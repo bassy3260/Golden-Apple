@@ -51,7 +51,8 @@ public class community_QnA extends Fragment {
                                         document.getData().get("title").toString(),
                                         document.getData().get("uid").toString(),
                                         new Date(document.getDate("created").getTime()),
-                                        (ArrayList<String>)document.getData().get("content")));
+                                        (ArrayList<String>)document.getData().get("content"),
+                                        document.getData().get("postKey").toString()));
                             }
                             //리사이클러 뷰 생성
                             recyclerView= v.findViewById(R.id.qnaRecyclerView);

@@ -67,6 +67,7 @@ public class Signup extends AppCompatActivity {
         String passwordtest = ((EditText) findViewById(R.id.signPWtest)).getText().toString().trim();
         String phone_number = ((EditText) findViewById(R.id.signPhonenumber)).getText().toString().trim();
 
+
         if (email.length() > 0 && password.length() > 0 && passwordtest.length() > 0
                 && phone_number.length() > 0) {
             if (password.equals(passwordtest) && phone_number.matches("[+-]?\\d*(\\.\\d+)?") == true) {
@@ -77,9 +78,10 @@ public class Signup extends AppCompatActivity {
                         //가입 성공시
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String uid=user.getUid();
                             int p_number = Integer.parseInt(phone_number);
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            MemberInfo memberInfo = new MemberInfo(name, p_number);
+                            MemberInfo memberInfo = new MemberInfo(name, p_number,uid);
                             db.collection("user").document(user.getUid()).set(memberInfo);
 
                             //가입이 이루어져을시 가입 화면을 빠져나감.

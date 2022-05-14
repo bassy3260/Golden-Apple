@@ -4,12 +4,14 @@ public class MemberInfo {
 
     public String name;
     public int phone_number;
+    public String uid;
 
 
     //초기화
-    public MemberInfo(String name, int phone_number){
+    public MemberInfo(String name, int phone_number,String uid){
         this.name=name;
         this.phone_number=phone_number;
+        this.uid=uid;
     }
 
     //getter, setter
@@ -26,5 +28,13 @@ public class MemberInfo {
 
     public void setPhone_number(){
         this.phone_number=phone_number;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }
