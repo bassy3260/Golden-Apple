@@ -11,6 +11,7 @@ public class Util {
         Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show();
     }
 
+    /* 파이어베이스 스토리지 이미지 링크 확인 함수 */
     public static boolean isStorageUrl(String url){
         return Patterns.WEB_URL.matcher(url).matches() && url.contains(
                 "https://firebasestorage.googleapis.com/v0/b/golden-apple-3b2c9.appspot.com/o/post");
