@@ -68,6 +68,7 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
         return   commentListViewHolder;
     }
 
+    /* 리스트 뷰 텍스트 설정 */
     @Override
     public void onBindViewHolder(@NonNull commentListViewHolder viewHolder, int position) {
         View holder = viewHolder.itemView;
