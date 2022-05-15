@@ -118,6 +118,8 @@ public class postActivity extends AppCompatActivity {
                     TextView textView = new TextView(this);
                     textView.setLayoutParams(layoutParams);
                     textView.setText(contents);
+                    textView.setTextSize(20);
+                    textView.setPadding(0,20,0,20);
                     textView.setTextColor(Color.rgb(0, 0, 0));
                     contentsLayout.addView(textView);
                 }
