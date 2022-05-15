@@ -131,9 +131,9 @@ public class postActivity extends AppCompatActivity {
         //FireStore에서 게시글 정보 받아오기
         database.collection("comment")
                 // 카테고리에 따라 게시글 받아오기
-                //.whereEqualTo("post_id",postKey)
+                .whereEqualTo("post_id",postKey)
                 //시간순 정렬
-                .orderBy("comment_time", Query.Direction.DESCENDING)
+                .orderBy("comment_time", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="50dp">
+        android:paddingBottom="70dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/write_toolbar"
@@ -33,6 +33,7 @@
             android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -81,7 +82,7 @@
                         <include
                             layout="@layout/view_post_edittext"
                             android:layout_width="match_parent"
-                            android:layout_height="300dp"
+                            android:layout_height="100dp"
                             android:minHeight="200dp" />
                     </LinearLayout>
 
@@ -146,4 +147,5 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
+
 </RelativeLayout>

@@ -4,13 +4,17 @@ package com.aaa.aaa.adpater;
  * 게시글 리사이클러뷰 어댑터
  **/
 
+import static com.aaa.aaa.Util.isStorageUrl;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aaa.aaa.R;
 import com.aaa.aaa.postActivity;
 import com.aaa.aaa.writeInfo;
+import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,8 +38,6 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
     // 보여줄 Item 목록을 저장할 List
     private ArrayList<writeInfo> items;
     private Intent intent;
-    Context context;
-    private Activity activity;
 
     @Override
     public int getItemViewType(int position) {
@@ -93,7 +96,23 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
         TextView title = holder.findViewById(R.id.listTitleText);
         title.setText(items.get(position).getTitle());
         TextView content = holder.findViewById(R.id.listContentText);
-        content.setText(items.get(position).getCategory());
+        String listcon="";
+        ArrayList<String> con = items.get(position).getContent();
+        for (int i = 0; i < con.size(); i++) {
+            String contents = con.get(i);
+            if (isStorageUrl(contents)) {
+              listcon+="(이미지) ";
+            } else {
+                if((listcon+contents).length()>20){
+                    listcon=contents.substring(0, 20-listcon.length())+"...";
+                    break;
+                }
+                else{
+                    listcon+=contents+" ";
+                }
+            }
+        }
+        content.setText(listcon);
         TextView date = holder.findViewById(R.id.listTimeText);
         Date now = Calendar.getInstance().getTime();
         SimpleDateFormat format_year = new SimpleDateFormat("yyyy", Locale.getDefault());

@@ -24,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,9 +35,6 @@ import java.util.Locale;
 public class commentListViewAdapter extends RecyclerView.Adapter<commentListViewAdapter.commentListViewHolder> {
     // 보여줄 Item 목록을 저장할 List
     private ArrayList<commentInfo> items;
-    private Intent intent;
-    Context context;
-    private Activity activity;
     private FirebaseFirestore database;
     @Override
     public int getItemViewType(int position) {

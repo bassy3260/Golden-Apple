@@ -41,16 +41,12 @@ public class Frag3 extends Fragment {
         view = inflater.inflate(R.layout.frag3, container, false);
         setHasOptionsMenu(true); //메뉴 보이기
         mViewPager = (ViewPager) view.findViewById(R.id.categoryViewpager);
+
         //글쓰기 화면으로 이동
         write= (FloatingActionButton) view.findViewById(R.id.writeButton);
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
 
-
-
-        FragmentManager fragManager = myContext.getFragmentManager();
         adapter= new communityPagerAdapter(getChildFragmentManager(),5);
         mViewPager = (ViewPager) view.findViewById(R.id.categoryViewpager);
-
         mViewPager.setAdapter(adapter);
         mViewPager.setSaveEnabled(false);
 
@@ -63,7 +59,6 @@ public class Frag3 extends Fragment {
             }
         });
         return view;
-
     }
 
     @Override

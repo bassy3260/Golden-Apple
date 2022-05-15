@@ -128,10 +128,10 @@ public class writeActivity extends AppCompatActivity {
 
                 case R.id.deleteImgButton:
                     View selectedView = (View)selectedImageView.getParent();
-                    partList.get(parent.indexOfChild(selectedView)-1);
-                    parent.removeView((View) selectedImageView.getParent());
+                    partList.remove(parent.indexOfChild(selectedView) - 1);
+                    parent.removeView(selectedView);
                     buttonsBackgroundLayout.setVisibility(View.GONE);
-                    partList.remove(checked);
+
 
                     break;
             }
@@ -183,7 +183,8 @@ public class writeActivity extends AppCompatActivity {
 
                     Uri file = data.getData();
                     String uri = file.toString();
-                    partList.add(uri);
+
+
 
                     ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -194,10 +195,13 @@ public class writeActivity extends AppCompatActivity {
 
                     if (selectedText == null) {
                         parent.addView(linearLayout);
+                        partList.add(uri);
                     } else {
                         for (int i = 0; i < parent.getChildCount(); i++) {
                             if (parent.getChildAt(i) == selectedText.getParent()) {
                                 parent.addView(linearLayout, i + 1);
+                                partList.add(i,uri);
+
                                 checked=i;
                                 break;
                             }
@@ -234,6 +238,7 @@ public class writeActivity extends AppCompatActivity {
                 try {
                     Uri file = data.getData();
                     String uri = file.toString();
+                    partList.set(parent.indexOfChild((View) selectedImageView.getParent()) - 1, uri);
                     Glide.with(this).load(uri).override(1000).into(selectedImageView);
                 } catch (Exception e) {
 
