@@ -1,9 +1,15 @@
-package com.aaa.aaa;
+package com.aaa.aaa.adpater;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.aaa.aaa.community_QnA;
+import com.aaa.aaa.community_donation;
+import com.aaa.aaa.community_information;
+import com.aaa.aaa.community_recipe;
+import com.aaa.aaa.community_trade;
 
 import java.util.ArrayList;
 

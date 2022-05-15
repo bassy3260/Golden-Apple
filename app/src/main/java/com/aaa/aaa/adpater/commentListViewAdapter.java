@@ -1,4 +1,4 @@
-package com.aaa.aaa;
+package com.aaa.aaa.adpater;
 
 /**
  * 게시글 리사이클러뷰 어댑터
@@ -11,12 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aaa.aaa.R;
+import com.aaa.aaa.commentInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;

@@ -18,11 +18,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.aaa.aaa.adpater.communityPagerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
 
 public class Frag3 extends Fragment {
 
@@ -83,7 +82,7 @@ public class Frag3 extends Fragment {
         //글쓰기 버튼 함수
         switch (item.getItemId()){
             case R.id.menu_write:
-                Intent intent = new Intent(getActivity(), postActivity.class);
+                Intent intent = new Intent(getActivity(), mypageActivity.class);
                 startActivity(intent);
                 break;
 

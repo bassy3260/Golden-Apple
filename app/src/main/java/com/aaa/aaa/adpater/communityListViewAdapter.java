@@ -1,4 +1,4 @@
-package com.aaa.aaa;
+package com.aaa.aaa.adpater;
 
 /**
  * 게시글 리사이클러뷰 어댑터
@@ -7,18 +7,20 @@ package com.aaa.aaa;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.aaa.aaa.R;
+import com.aaa.aaa.postActivity;
+import com.aaa.aaa.writeInfo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,7 +67,7 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                intent=new Intent(v.getContext(),postActivity.class);
+                intent=new Intent(v.getContext(), postActivity.class);
                 int position=communityListViewHolder.getAdapterPosition();
                 intent.putExtra("postTitle", items.get(position).getTitle());
                 intent.putExtra("postUid", items.get(position).getUid());
