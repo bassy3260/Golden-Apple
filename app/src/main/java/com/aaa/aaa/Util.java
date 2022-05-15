@@ -3,7 +3,7 @@ package com.aaa.aaa;
 import android.app.Activity;
 import android.util.Patterns;
 import android.widget.Toast;
-
+/* 자주 쓰는 유틸 클래스 */
 public class Util {
     public Util(){/* */}
 
