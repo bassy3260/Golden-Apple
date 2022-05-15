@@ -7,6 +7,7 @@ import android.widget.Toast;
 public class Util {
     public Util(){/* */}
 
+    /* 토스트 함수 */
     public static void showToast(Activity activity,String msg){
         Toast.makeText(activity,msg, Toast.LENGTH_SHORT).show();
     }
