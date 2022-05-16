@@ -62,8 +62,5 @@ public class mycommentActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
-
     }
 }
