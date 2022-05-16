@@ -1,6 +1,6 @@
-/**
- * 마이페이지 액티비티
- **/
+/*
+  마이페이지 액티비티
+ */
 package com.aaa.aaa;
 
 import android.content.Intent;
@@ -14,9 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,9 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -42,42 +39,36 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-
 
 public class writeActivity extends AppCompatActivity {
+
     private static final int REQUEST_CODE = 0;
-    Toolbar writeToolbar;
     private FirebaseAuth firebaseAuth;
-    String format_yyyyMMdd = "yyyy/MM/dd";
-    String format_hhmm = "hh:mm";
-    private Date created;
-    private RelativeLayout buttonsBackgroundLayout;
-    FirebaseUser user;
-    Button image;
-    private ImageView selectedImageView;
-    private ArrayList<String> partList = new ArrayList<>();
+    private FirebaseUser user;
+
     private LinearLayout parent;
+    private EditText selectedText;
+    private RelativeLayout buttonsBackgroundLayout;
+    private ImageView selectedImageView;
+
+    private Date created;
+    private final ArrayList<String> partList = new ArrayList<>();
     private int successCount = 0;
     private int partCount = 0;
-    private EditText selectedText;
-    private int checked=0;
 
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
         parent = findViewById(R.id.contentsLayout);
-        ActionBar actionBar = getSupportActionBar();
 
         Toolbar tb = (Toolbar) findViewById(R.id.write_toolbar);
         setSupportActionBar(tb);//액션바를 툴바로 바꿔줌
-        getSupportActionBar().setTitle("글 쓰기");
+        getSupportActionBar().setTitle("글 쓰기"); //툴바 타이틀 설정
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //뒤로가기 버튼 생성
 
         firebaseAuth = FirebaseAuth.getInstance();
         buttonsBackgroundLayout = findViewById(R.id.buttonsBackgroundLayout);
@@ -91,6 +82,7 @@ public class writeActivity extends AppCompatActivity {
                 selectedText = null;
             }
         });
+
         // Spinner
         Spinner categorySpinner = (Spinner) findViewById(R.id.category_spinner);
         ArrayAdapter categoryAdapter = ArrayAdapter.createFromResource(this,
@@ -98,8 +90,7 @@ public class writeActivity extends AppCompatActivity {
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(categoryAdapter);
 
-        image = findViewById(R.id.addimageButton);
-        image.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.addimageButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -131,13 +122,12 @@ public class writeActivity extends AppCompatActivity {
                     partList.remove(parent.indexOfChild(selectedView) - 1);
                     parent.removeView(selectedView);
                     buttonsBackgroundLayout.setVisibility(View.GONE);
-
-
                     break;
             }
         }
     };
 
+    /* 가리키는 EditText 설정 메소드 */
     View.OnFocusChangeListener onFocusChangeListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
@@ -174,6 +164,7 @@ public class writeActivity extends AppCompatActivity {
     }
 
 
+    /* 갤러리에서 사진을 가져왔을 경우 */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -184,15 +175,13 @@ public class writeActivity extends AppCompatActivity {
                     Uri file = data.getData();
                     String uri = file.toString();
 
-
-
                     ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
-
                     LinearLayout linearLayout = new LinearLayout(writeActivity.this);
                     linearLayout.setLayoutParams(layoutParams);
                     linearLayout.setOrientation(LinearLayout.VERTICAL);
 
+                    // 사진 사이에 게시글 넣기
                     if (selectedText == null) {
                         parent.addView(linearLayout);
                         partList.add(uri);
@@ -201,8 +190,6 @@ public class writeActivity extends AppCompatActivity {
                             if (parent.getChildAt(i) == selectedText.getParent()) {
                                 parent.addView(linearLayout, i + 1);
                                 partList.add(i,uri);
-
-                                checked=i;
                                 break;
                             }
                         }
@@ -215,6 +202,7 @@ public class writeActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             buttonsBackgroundLayout.setVisibility(View.VISIBLE);
                             selectedImageView = (ImageView) view;
+                            selectedImageView.setBackgroundResource(R.drawable.photo_frame);
                         }
                     });
 
@@ -225,14 +213,14 @@ public class writeActivity extends AppCompatActivity {
                     editText.setLayoutParams(layoutParams);
                     editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
                     editText.setBackground(null);
+                    editText.setHint("사진 설명");
                     editText.setOnFocusChangeListener(onFocusChangeListener);
+
                     linearLayout.addView(editText);
-
-
                 } catch (Exception e) {
-
                 }
             }
+            //이미지 수정 시
         } else if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 try {
@@ -241,16 +229,15 @@ public class writeActivity extends AppCompatActivity {
                     partList.set(parent.indexOfChild((View) selectedImageView.getParent()) - 1, uri);
                     Glide.with(this).load(uri).override(1000).into(selectedImageView);
                 } catch (Exception e) {
-
                 }
-
             }
         } else {
-
         }
     }
 
+    /* 게시글 업로드 함수 */
     private void storageUpload() {
+        //FireBase user 정보 가져오기
         user = FirebaseAuth.getInstance().getCurrentUser();
         //타이틀
         final String title = ((EditText) findViewById(R.id.titleText)).getText().toString();
@@ -260,40 +247,38 @@ public class writeActivity extends AppCompatActivity {
         String u_id = user.getUid();
         //시간 가져오기
         created = Calendar.getInstance().getTime();
-        SimpleDateFormat format_date = new SimpleDateFormat(format_yyyyMMdd, Locale.getDefault());
-        SimpleDateFormat format_time = new SimpleDateFormat(format_hhmm, Locale.getDefault());
-        String time = format_date.format(created );
-        String date = format_time.format(created );
+
+        //FireBase 객체 설정
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference();
-        ArrayList<String> contentList = new ArrayList<>();
-        user = FirebaseAuth.getInstance().getCurrentUser();
         StorageReference storageRef = storage.getReference();
         final DocumentReference postRef = firebaseFirestore.collection("post").document();
-        String postkey=postRef.getId();
-        if (title.length() > 0) {
+        String postkey=postRef.getId(); // 게시글 아이디 가져오기
 
+        ArrayList<String> contentList = new ArrayList<>();
+
+        if (title.length() > 0) {
             for (int i = 0; i < parent.getChildCount(); i++) {
                 LinearLayout linearLayout = (LinearLayout) parent.getChildAt(i);
                 for(int j=0;j<linearLayout.getChildCount();j++){
                     View view=linearLayout.getChildAt(j);
+                    // EditText 읽기
                     if (view instanceof EditText) {
                         String text = ((EditText)view).getText().toString();
                         if (text.length() > 0) {
                             contentList.add(text);
                         }
+                        // 사진 읽기
                     } else {
                         contentList.add(partList.get(partCount));
                         StorageReference riversRef = storageRef.child("post/" + postRef.getId() + "/" + (contentList.size() - 1) + ".jpg");
                         try {
-
+                            //Storage에 사진 업로드
                             String url = partList.get(partCount);
                             Uri file = Uri.parse(url);
                             StorageMetadata metadata = new StorageMetadata.Builder()
                                     .setCustomMetadata("index", "" + (contentList.size() - 1)).build();
                             UploadTask uploadTask = riversRef.putFile(file, metadata);
-
                             uploadTask.addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception exception) {
@@ -310,7 +295,6 @@ public class writeActivity extends AppCompatActivity {
                                             successCount++;
                                             Log.e("로그", contentList.get(1));
                                             if (partList.size() == successCount) {
-
                                                 writeInfo writeInfo = new writeInfo(category, title, u_id, created, contentList,postkey);
                                                 postRef.set(writeInfo)
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -332,13 +316,12 @@ public class writeActivity extends AppCompatActivity {
                                 }
                             });
                         } catch (Exception e) {
-
                         }
                         partCount++;
                     }
                 }
-
             }
+            // 이미지가 없을 시
             if(partList.size()==0){
                 writeInfo writeInfo = new writeInfo(category, title, u_id, created, contentList,postkey);
                 postRef.set(writeInfo)
@@ -365,6 +348,4 @@ public class writeActivity extends AppCompatActivity {
     public void toast(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
-
-
 }

@@ -62,7 +62,7 @@
             android:background="#16000000" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/mypostButton"
             android:layout_width="match_parent"
             android:layout_height="73dp"
             android:background=" #00ff0000"
@@ -72,7 +72,7 @@
             android:textColor="#000000" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/mycommentButton"
             android:layout_width="match_parent"
             android:layout_height="73dp"
             android:background=" #00ff0000"

@@ -1,5 +1,6 @@
 package com.aaa.aaa;
 
+/** 게시글 리스트 (질문 답변) **/
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -32,7 +33,7 @@ public class community_QnA extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_community_qn, container, false);
 
-        /** 리사이클러 뷰(게시글 리스트) 생성**/
+        /** 리사이클러 뷰(게시글 리스트) 생성 **/
         final ArrayList<writeInfo> postList = new ArrayList<>();
         database = FirebaseFirestore.getInstance();
 
@@ -68,12 +69,10 @@ public class community_QnA extends Fragment {
                     }
                 });
 
-
         final SwipeRefreshLayout pullToRefresh = v.findViewById(R.id.QnArefresh_layout);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 postList.clear();
                 //FireStore에서 게시글 정보 받아오기
@@ -102,14 +101,12 @@ public class community_QnA extends Fragment {
                                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                     adapter = new communityListViewAdapter(getActivity(), postList);
                                     recyclerView.setAdapter(adapter);
-
                                 } else {
                                 }
                             }
                         });
 
                 ft.detach(community_QnA.this).attach(community_QnA.this).commit();
-
                 pullToRefresh.setRefreshing(false);
             }
         });

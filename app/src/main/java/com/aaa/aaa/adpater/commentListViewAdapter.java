@@ -1,12 +1,6 @@
 package com.aaa.aaa.adpater;
 
-/**
- * 게시글 리사이클러뷰 어댑터
- **/
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
+/** 게시글 리사이클러뷰 어댑터 **/
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,7 +63,6 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
     @Override
     public void onBindViewHolder(@NonNull commentListViewHolder viewHolder, int position) {
         View holder = viewHolder.itemView;
-
         TextView comment_name = holder.findViewById(R.id.commentNameText);
         String comment_uid=items.get(position).getComment_uid();
         database = FirebaseFirestore.getInstance();
@@ -91,7 +82,6 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
                         }
                     }
                 });
-
         TextView content = holder.findViewById(R.id.commentText);
         content.setText(items.get(position).getComment_content());
         TextView date = holder.findViewById(R.id.commentTimeText);
@@ -107,8 +97,6 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
         } else {
             date.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(items.get(position).getComment_time()));
         }
-
-
     }
 
     @Override

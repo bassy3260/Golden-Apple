@@ -55,6 +55,7 @@ public class communityPagerAdapter extends FragmentStatePagerAdapter {
                 return null;
         }
     }
+
     @Nullable
     @Override
     public CharSequence getPageTitle(int position)

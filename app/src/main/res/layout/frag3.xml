@@ -30,9 +30,9 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:clickable="true"
-        app:backgroundTint="#FF2F9E"
+        app:backgroundTint="@android:color/holo_green_light"
         app:rippleColor="#00FFFFFF"
-        app:srcCompat="@drawable/write_circle" />
+        app:srcCompat="@drawable/pen_icon" />
 
 
 </RelativeLayout>

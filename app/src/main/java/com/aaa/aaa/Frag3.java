@@ -1,7 +1,6 @@
 package com.aaa.aaa;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.aaa.aaa.adpater.communityPagerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Frag3 extends Fragment {
@@ -44,12 +42,10 @@ public class Frag3 extends Fragment {
 
         //글쓰기 화면으로 이동
         write= (FloatingActionButton) view.findViewById(R.id.writeButton);
-
         adapter= new communityPagerAdapter(getChildFragmentManager(),5);
         mViewPager = (ViewPager) view.findViewById(R.id.categoryViewpager);
         mViewPager.setAdapter(adapter);
         mViewPager.setSaveEnabled(false);
-
         write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

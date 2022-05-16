@@ -1,4 +1,3 @@
-/**마이페이지 액티비티**/
 package com.aaa.aaa;
 
 import android.content.Intent;
@@ -21,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import java.io.InputStream;
 
 public class mypageActivity extends AppCompatActivity {
@@ -30,6 +30,7 @@ public class mypageActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private static final int REQUEST_CODE = 0;
     private ImageView imageView;
+    private Button mypost, mycomment;
 
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -51,7 +52,6 @@ public class mypageActivity extends AppCompatActivity {
         });
 
         imageView = findViewById(R.id.profileimageView);
-
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,11 +59,19 @@ public class mypageActivity extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent, REQUEST_CODE);
-
             }
         });
 
-
+        mypost = findViewById(R.id.mypostButton);
+        mypost.setOnClickListener(v -> {
+            Intent intent = new Intent(this, mypostActivity.class);
+            startActivity(intent);
+        });
+        mycomment = findViewById(R.id.mycommentButton);
+        mycomment.setOnClickListener(v -> {
+            Intent intent = new Intent(this, mycommentActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
@@ -73,10 +81,10 @@ public class mypageActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 try {
 
-                    FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     Uri file = data.getData();
                     StorageReference storageRef = storage.getReference();
-                    StorageReference riversRef = storageRef.child("profilephoto/"+user.getUid()+"/profile.jpg");
+                    StorageReference riversRef = storageRef.child("profilephoto/" + user.getUid() + "/profile.jpg");
                     UploadTask uploadTask = riversRef.putFile(file);
                     InputStream in = getContentResolver().openInputStream(data.getData());
 
@@ -87,33 +95,35 @@ public class mypageActivity extends AppCompatActivity {
                     imageView.setImageBitmap(img);
 
 
-
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                           toast("업로드 실패");
+                            toast("업로드 실패");
                         }
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                           toast("업로드 성공");
+                            toast("업로드 성공");
                         }
                     });
                 } catch (Exception e) {
 
                 }
             }
-        }else{
+        } else {
 
         }
     }
-
 
 
     public void toast(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
-
+    //액티비티 이동 함수
+    public void StartMyActivity(Class c) {
+        Intent intent = new Intent(this, c);
+        startActivity(intent);
+    }
 
 }

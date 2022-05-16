@@ -16,6 +16,9 @@
         android:theme="@style/Theme.AAA"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".mycommentActivity"
+            android:exported="false" />
+        <activity
             android:name=".community_trade"
             android:exported="false" />
         <activity
@@ -59,7 +62,10 @@
         <activity
             android:name=".writeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".postActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".postActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".mypostActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

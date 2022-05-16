@@ -5,16 +5,12 @@ package com.aaa.aaa.adpater;
  **/
 
 import static com.aaa.aaa.Util.isStorageUrl;
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.aaa.aaa.R;
 import com.aaa.aaa.postActivity;
 import com.aaa.aaa.writeInfo;
-import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -103,8 +98,8 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
             if (isStorageUrl(contents)) {
               listcon+="(이미지) ";
             } else {
-                if((listcon+contents).length()>20){
-                    listcon=contents.substring(0, 20-listcon.length())+"...";
+                if((listcon+contents).length()>30){
+                    listcon=contents.substring(0, 20-listcon.length());
                     break;
                 }
                 else{
@@ -112,7 +107,7 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
                 }
             }
         }
-        content.setText(listcon);
+        content.setText(listcon+"...");
         TextView date = holder.findViewById(R.id.listTimeText);
         Date now = Calendar.getInstance().getTime();
         SimpleDateFormat format_year = new SimpleDateFormat("yyyy", Locale.getDefault());

@@ -92,8 +92,6 @@ public class postActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 uidTextView.setText(document.getData().get("name").toString());
                             }
-
-
                         } else {
                         }
                     }
@@ -112,14 +110,15 @@ public class postActivity extends AppCompatActivity {
                     imageView.setLayoutParams(layoutParams);
                     imageView.setAdjustViewBounds(true);
                     imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    imageView.setPadding(0,0,0,30);
                     contentsLayout.addView(imageView);
                     Glide.with(this).load(contents).override(1000).thumbnail(0.1f).into(imageView);
                 } else {
                     TextView textView = new TextView(this);
                     textView.setLayoutParams(layoutParams);
                     textView.setText(contents);
-                    textView.setTextSize(20);
-                    textView.setPadding(0,20,0,20);
+                    textView.setTextSize(18);
+                    textView.setPadding(0,0,0,30);
                     textView.setTextColor(Color.rgb(0, 0, 0));
                     contentsLayout.addView(textView);
                 }
@@ -149,7 +148,6 @@ public class postActivity extends AppCompatActivity {
                                         document.getData().get("comment_content").toString(),
                                         document.getData().get("post_id").toString(),
                                         new Date(document.getDate("comment_time").getTime())));
-
                             }
 
                             //리사이클러 뷰 생성
@@ -158,7 +156,6 @@ public class postActivity extends AppCompatActivity {
                             recyclerView.setLayoutManager(new LinearLayoutManager(postActivity.this));
                             adapter = new commentListViewAdapter(postActivity.this,commentList);
                             recyclerView.setAdapter(adapter);
-
                         } else {
                         }
                     }
@@ -198,13 +195,11 @@ public class postActivity extends AppCompatActivity {
 
     private void commentUpload() {
         user = FirebaseAuth.getInstance().getCurrentUser();
-
         final String comment_content = ((EditText) findViewById(R.id.commentEditText)).getText().toString();
         String comment_uid = user.getUid();
         String post_id = (String) getIntent().getSerializableExtra("postpostKey");
         //시간 가져오기
         comment_time = Calendar.getInstance().getTime();
-
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         final DocumentReference commentRef = firebaseFirestore.collection("comment").document();
         String comment_id = commentRef.getId();
