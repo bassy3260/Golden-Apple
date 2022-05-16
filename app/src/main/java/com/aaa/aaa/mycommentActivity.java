@@ -1,6 +1,6 @@
 package com.aaa.aaa;
 
-/** 게시글 리스트 (질문 답변) **/
+/** 게시글 리스트 (내 댓글 보기) **/
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
