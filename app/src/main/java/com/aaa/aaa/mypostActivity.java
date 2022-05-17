@@ -3,16 +3,10 @@ package com.aaa.aaa;
 /** 게시글 리스트 (질문 답변) **/
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.aaa.aaa.adpater.communityListViewAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,7 +35,7 @@ public class mypostActivity extends AppCompatActivity {
         firebaseAuth=FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
         /** 리사이클러 뷰(게시글 리스트) 생성 **/
-        final ArrayList<writeInfo> postList = new ArrayList<>();
+        final ArrayList<PostInfo> postList = new ArrayList<>();
         database = FirebaseFirestore.getInstance();
 
         //FireStore에서 게시글 정보 받아오기
@@ -56,7 +50,7 @@ public class mypostActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                postList.add(new writeInfo(
+                                postList.add(new PostInfo(
                                         document.getData().get("category").toString(),
                                         document.getData().get("title").toString(),
                                         document.getData().get("uid").toString(),

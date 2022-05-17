@@ -1,9 +1,11 @@
 package com.aaa.aaa.adpater;
 
 /** 게시글 리사이클러뷰 어댑터 **/
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aaa.aaa.R;
 import com.aaa.aaa.commentInfo;
+import com.aaa.aaa.postActivity;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,9 +42,10 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
         protected TextView name;
         protected TextView content;
         protected TextView time;
-
+        protected ImageView commentImageView;
         public commentListViewHolder(@NonNull View view) {
             super(view);
+            this.commentImageView=(ImageView)view.findViewById(R.id.commentImageView);
             this.name = (TextView) view.findViewById(R.id.commentNameText);
             this.content = (TextView) view.findViewById(R.id.commentText);
             this.time = (TextView) view.findViewById(R.id.commentTimeText);
@@ -64,6 +69,7 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
     public void onBindViewHolder(@NonNull commentListViewHolder viewHolder, int position) {
         View holder = viewHolder.itemView;
         TextView comment_name = holder.findViewById(R.id.commentNameText);
+        ImageView commentImageView=(ImageView)holder.findViewById(R.id.commentImageView);
         String comment_uid=items.get(position).getComment_uid();
         database = FirebaseFirestore.getInstance();
         //FireStore에서 게시글 정보 받아오기
@@ -77,6 +83,9 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 comment_name.setText(document.getData().get("name").toString());
+                                String url = document.getData().get("profile_pic").toString();
+                                Uri file = Uri.parse(url);
+                                Glide.with(holder.getContext()).load(file).centerCrop().override(500).into(commentImageView);
                             }
                         } else {
                         }

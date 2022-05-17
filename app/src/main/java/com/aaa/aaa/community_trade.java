@@ -34,7 +34,7 @@ public class community_trade extends Fragment {
         View v = inflater.inflate(R.layout.activity_community_trade, container, false);
 
         /** 리사이클러 뷰(게시글 리스트) 생성 **/
-        final ArrayList<writeInfo> postList = new ArrayList<>();
+        final ArrayList<PostInfo> postList = new ArrayList<>();
         database = FirebaseFirestore.getInstance();
 
         //FireStore에서 게시글 정보 받아오기
@@ -49,7 +49,7 @@ public class community_trade extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                postList.add(new writeInfo(
+                                postList.add(new PostInfo(
                                         document.getData().get("category").toString(),
                                         document.getData().get("title").toString(),
                                         document.getData().get("uid").toString(),
@@ -87,7 +87,7 @@ public class community_trade extends Fragment {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        postList.add(new writeInfo(
+                                        postList.add(new PostInfo(
                                                 document.getData().get("category").toString(),
                                                 document.getData().get("title").toString(),
                                                 document.getData().get("uid").toString(),

@@ -295,8 +295,8 @@ public class writeActivity extends AppCompatActivity {
                                             successCount++;
                                             Log.e("로그", contentList.get(1));
                                             if (partList.size() == successCount) {
-                                                writeInfo writeInfo = new writeInfo(category, title, u_id, created, contentList,postkey);
-                                                postRef.set(writeInfo)
+                                                PostInfo PostInfo = new PostInfo(category, title, u_id, created, contentList,postkey);
+                                                postRef.set(PostInfo)
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void aVoid) {
@@ -323,8 +323,8 @@ public class writeActivity extends AppCompatActivity {
             }
             // 이미지가 없을 시
             if(partList.size()==0){
-                writeInfo writeInfo = new writeInfo(category, title, u_id, created, contentList,postkey);
-                postRef.set(writeInfo)
+                PostInfo PostInfo = new PostInfo(category, title, u_id, created, contentList,postkey);
+                postRef.set(PostInfo)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

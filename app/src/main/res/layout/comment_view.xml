@@ -24,7 +24,7 @@
                 app:cardCornerRadius="15dp">
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/commentImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/default_profile" />
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:maxHeight="25dp"
                 android:paddingLeft="10dp"
-                android:text="TextView"
+                android:text="(존재하지 않는 회원입니다.)"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>

@@ -48,7 +48,7 @@
                     app:cardCornerRadius="100dp">
 
                     <ImageView
-                        android:id="@+id/imageView2"
+                        android:id="@+id/postImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/default_profile" />
@@ -63,7 +63,7 @@
                         android:id="@+id/postUserTextView"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:text="TextView"
+                        android:text="(존재하지 않는 회원입니다.)"
                         android:textSize="17sp" />
 
                     <TextView

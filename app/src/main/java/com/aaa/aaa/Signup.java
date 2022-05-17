@@ -81,7 +81,7 @@ public class Signup extends AppCompatActivity {
                             String uid=user.getUid();
                             int p_number = Integer.parseInt(phone_number);
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            MemberInfo memberInfo = new MemberInfo(name, p_number,uid);
+                            UserInfo memberInfo = new UserInfo(name, p_number,uid,"null");
                             db.collection("user").document(user.getUid()).set(memberInfo);
 
                             //가입이 이루어져을시 가입 화면을 빠져나감.

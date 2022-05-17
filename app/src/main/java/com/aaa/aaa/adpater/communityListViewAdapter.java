@@ -5,6 +5,7 @@ package com.aaa.aaa.adpater;
  **/
 
 import static com.aaa.aaa.Util.isStorageUrl;
+
 import android.content.Intent;
 import android.util.Log;
 
@@ -20,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.aaa.aaa.R;
 import com.aaa.aaa.postActivity;
-import com.aaa.aaa.writeInfo;
+import com.aaa.aaa.PostInfo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.Locale;
 
 public class communityListViewAdapter extends RecyclerView.Adapter<communityListViewAdapter.communityListViewHolder> {
     // 보여줄 Item 목록을 저장할 List
-    private ArrayList<writeInfo> items;
+    private ArrayList<PostInfo> items;
     private Intent intent;
 
     @Override
@@ -53,7 +54,7 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
         }
     }
 
-    public communityListViewAdapter(FragmentActivity activity, ArrayList<writeInfo> items) {
+    public communityListViewAdapter(FragmentActivity activity, ArrayList<PostInfo> items) {
         this.items = items;
     }
 
@@ -64,17 +65,17 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
         communityListViewHolder communityListViewHolder = new communityListViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                intent=new Intent(v.getContext(), postActivity.class);
-                int position=communityListViewHolder.getAdapterPosition();
+            public void onClick(View v) {
+                intent = new Intent(v.getContext(), postActivity.class);
+                int position = communityListViewHolder.getAdapterPosition();
                 intent.putExtra("postTitle", items.get(position).getTitle());
                 intent.putExtra("postUid", items.get(position).getUid());
                 intent.putExtra("postContent", items.get(position).getContent());
                 intent.putExtra("postCategory", items.get(position).getCategory());
                 intent.putExtra("postCreated", items.get(position).getCreated());
                 intent.putExtra("postpostKey", items.get(position).getPostKey());
-                Iterator iter =items.get(position).getContent().iterator(); //Iterator 선언
-                while(iter.hasNext()){//다음값이 있는지 체크
+                Iterator iter = items.get(position).getContent().iterator(); //Iterator 선언
+                while (iter.hasNext()) {//다음값이 있는지 체크
                     Log.e("로그", "url:" + iter.next());
                 }
                 v.getContext().startActivity(intent);
@@ -91,23 +92,26 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
         TextView title = holder.findViewById(R.id.listTitleText);
         title.setText(items.get(position).getTitle());
         TextView content = holder.findViewById(R.id.listContentText);
-        String listcon="";
+        String listcon = "";
         ArrayList<String> con = items.get(position).getContent();
         for (int i = 0; i < con.size(); i++) {
             String contents = con.get(i);
             if (isStorageUrl(contents)) {
-              listcon+="(이미지) ";
+                listcon += "(이미지) ";
             } else {
-                if((listcon+contents).length()>30){
-                    listcon=contents.substring(0, 20-listcon.length());
-                    break;
-                }
-                else{
-                    listcon+=contents+" ";
+                if (contents.contains("\n")) {
+                    contents=contents.replace("\n", " ");
+
+                    if ((listcon + contents).length() > 30) {
+                        listcon = contents.substring(0, 20 - listcon.length())+"...";
+                        break;
+                    } else {
+                        listcon += contents + " ";
+                    }
                 }
             }
         }
-        content.setText(listcon+"...");
+        content.setText(listcon);
         TextView date = holder.findViewById(R.id.listTimeText);
         Date now = Calendar.getInstance().getTime();
         SimpleDateFormat format_year = new SimpleDateFormat("yyyy", Locale.getDefault());

@@ -3,7 +3,7 @@ package com.aaa.aaa;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class writeInfo {
+public class PostInfo {
     String category;
     String title;
     String uid;
@@ -11,7 +11,7 @@ public class writeInfo {
     private ArrayList<String> content;
     String postKey;
 
-    public writeInfo(String category, String title, String uid, Date created, ArrayList<String> content, String postKey) {
+    public PostInfo(String category, String title, String uid, Date created, ArrayList<String> content, String postKey) {
         this.category = category;
         this.title = title;
         this.uid = uid;

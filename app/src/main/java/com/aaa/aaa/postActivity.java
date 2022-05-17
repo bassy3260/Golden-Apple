@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -48,6 +49,7 @@ public class postActivity extends AppCompatActivity {
     private FirebaseUser user;
     private commentListViewAdapter adapter;
     private RecyclerView recyclerView;
+    private ImageView postImageView;
     private Date comment_time;
     private String comment_content;
     private String comment_id;
@@ -76,9 +78,10 @@ public class postActivity extends AppCompatActivity {
         TextView TimeTextView = findViewById(R.id.postCreatedTextView);
         TimeTextView.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(created));
 
-
         String uid = (String) getIntent().getSerializableExtra("postUid");
         TextView uidTextView = findViewById(R.id.postUserTextView);
+
+        postImageView=(ImageView)findViewById(R.id.postImageView);
         database = FirebaseFirestore.getInstance();
         //FireStore에서 게시글 정보 받아오기
         database.collection("user")
@@ -91,8 +94,12 @@ public class postActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 uidTextView.setText(document.getData().get("name").toString());
+                                String url = document.getData().get("profile_pic").toString();
+                                Uri file = Uri.parse(url);
+                                Glide.with(postActivity.this).load(url).centerCrop().override(500).into(postImageView);
                             }
                         } else {
+
                         }
                     }
                 });
