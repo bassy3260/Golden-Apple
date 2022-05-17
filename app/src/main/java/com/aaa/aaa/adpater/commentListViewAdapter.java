@@ -83,9 +83,14 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 comment_name.setText(document.getData().get("name").toString());
-                                String url = document.getData().get("profile_pic").toString();
-                                Uri file = Uri.parse(url);
-                                Glide.with(holder.getContext()).load(file).centerCrop().override(500).into(commentImageView);
+                                if (document.getData().get("profile_pic").toString().equals("null")) {
+                                    commentImageView.setImageResource(R.drawable.default_profile);
+                                } else {
+                                    String url = document.getData().get("profile_pic").toString();
+                                    Uri file = Uri.parse(url);
+                                    Glide.with(holder.getContext()).load(file).centerCrop().override(500).into(commentImageView);
+                                }
+
                             }
                         } else {
                         }

@@ -85,7 +85,7 @@ public class mypageActivity extends AppCompatActivity {
                                         document.getData().get("profile_pic").toString()));
 
                                 name.setText(document.getData().get("name").toString());
-                                if (document.getData().get("profile_pic").toString() == "null") {
+                                if (document.getData().get("profile_pic").toString().equals("null")) {
                                     imageView.setImageResource(R.drawable.default_profile);
                                 } else {
                                     String url = document.getData().get("profile_pic").toString();

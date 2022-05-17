@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,9 +95,13 @@ public class postActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 uidTextView.setText(document.getData().get("name").toString());
-                                String url = document.getData().get("profile_pic").toString();
-                                Uri file = Uri.parse(url);
-                                Glide.with(postActivity.this).load(url).centerCrop().override(500).into(postImageView);
+                                if (document.getData().get("profile_pic").toString().equals("null")) {
+                                    postImageView.setImageResource(R.drawable.default_profile);
+                                } else {
+                                    String url = document.getData().get("profile_pic").toString();
+                                    Uri file = Uri.parse(url);
+                                    Glide.with(postActivity.this).load(url).centerCrop().override(500).into(postImageView);
+                                }
                             }
                         } else {
 
@@ -186,6 +191,16 @@ public class postActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.default_post_menu, menu);
         return true;
     }
+    public void scrollDown(){
+        ScrollView scrollView=(ScrollView)findViewById(R.id.postScrollView);
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
+    }
+
 
     //추가된 소스, ToolBar에 추가된 항목의 select 이벤트를 처리하는 함수
     @Override
