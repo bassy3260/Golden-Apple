@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aaa.aaa.R;
+import com.aaa.aaa.listener.OnPostListener;
 import com.aaa.aaa.postActivity;
 import com.aaa.aaa.PostInfo;
 
@@ -34,7 +35,7 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
     // 보여줄 Item 목록을 저장할 List
     private ArrayList<PostInfo> items;
     private Intent intent;
-
+    private OnPostListener onPostListener;
     @Override
     public int getItemViewType(int position) {
         return position;
@@ -84,6 +85,10 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
 
         });
         return communityListViewHolder;
+    }
+
+    public void setOnPostListener(OnPostListener onPostListener){
+        this.onPostListener = onPostListener;
     }
 
     @Override

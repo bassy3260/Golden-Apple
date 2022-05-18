@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,18 +57,23 @@ public class postActivity extends AppCompatActivity {
     private String comment_id;
     private String comment_uid;
     private String post_id;
-
+    private MenuItem postEdit,postDelete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_postpage);
+        user = FirebaseAuth.getInstance().getCurrentUser();
         findViewById(R.id.commentWriteButton).setOnClickListener(onClickListener);
         String postKey = (String) getIntent().getSerializableExtra("postpostKey");
         String category = (String) getIntent().getSerializableExtra("postCategory");
         Toolbar tb = (Toolbar) findViewById(R.id.write_toolbar);
         setSupportActionBar(tb);//액션바를 툴바로 바꿔줌
         getSupportActionBar().setTitle(category);
+
+        String uid = (String) getIntent().getSerializableExtra("postUid");
+        TextView uidTextView = findViewById(R.id.postUserTextView);
+
         Log.e("로그", "url:" + postKey);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,8 +85,7 @@ public class postActivity extends AppCompatActivity {
         TextView TimeTextView = findViewById(R.id.postCreatedTextView);
         TimeTextView.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(created));
 
-        String uid = (String) getIntent().getSerializableExtra("postUid");
-        TextView uidTextView = findViewById(R.id.postUserTextView);
+
 
         postImageView=(ImageView)findViewById(R.id.postImageView);
         database = FirebaseFirestore.getInstance();
@@ -189,8 +194,18 @@ public class postActivity extends AppCompatActivity {
         //return super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.default_post_menu, menu);
+        String uid = (String) getIntent().getSerializableExtra("postUid");
+        TextView uidTextView = findViewById(R.id.postUserTextView);
+        MenuItem postedit=menu.findItem(R.id.postEditMenu);
+        MenuItem postdelete=menu.findItem(R.id.postDeleteMenu);
+        if(user.getUid().equals(uid)) {
+            postedit.setVisible(true);
+            postdelete.setVisible(true);
+        }
+
         return true;
     }
+
     public void scrollDown(){
         ScrollView scrollView=(ScrollView)findViewById(R.id.postScrollView);
         scrollView.post(new Runnable() {
@@ -200,8 +215,6 @@ public class postActivity extends AppCompatActivity {
             }
         });
     }
-
-
     //추가된 소스, ToolBar에 추가된 항목의 select 이벤트를 처리하는 함수
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -211,6 +224,26 @@ public class postActivity extends AppCompatActivity {
                 // User chose the "Settings" item, show the app settings UI...
                 finish();
                 break;
+            case R.id.postEditMenu:
+                break;
+            case R.id.postDeleteMenu:
+                String post_id = (String) getIntent().getSerializableExtra("postpostKey");
+                database = FirebaseFirestore.getInstance();
+                database.collection("post").document(post_id)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                               toast("게시글이 삭제되었습니다.");
+                               finish();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                            }
+                        });
+
         }
         return true;
     }
