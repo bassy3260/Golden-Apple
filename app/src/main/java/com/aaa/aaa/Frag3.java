@@ -26,10 +26,7 @@ public class Frag3 extends Fragment {
     private View view;
 
     ViewPager mViewPager;
-
-    private Button mypage;
     FloatingActionButton write;
-    private FirebaseAuth firebaseAuth;
     communityPagerAdapter adapter;
     private FragmentActivity myContext;
 
@@ -39,13 +36,13 @@ public class Frag3 extends Fragment {
         view = inflater.inflate(R.layout.frag3, container, false);
         setHasOptionsMenu(true); //메뉴 보이기
         mViewPager = (ViewPager) view.findViewById(R.id.categoryViewpager);
-
-        //글쓰기 화면으로 이동
-        write= (FloatingActionButton) view.findViewById(R.id.writeButton);
         adapter= new communityPagerAdapter(getChildFragmentManager(),5);
         mViewPager = (ViewPager) view.findViewById(R.id.categoryViewpager);
         mViewPager.setAdapter(adapter);
         mViewPager.setSaveEnabled(false);
+
+        //글쓰기 화면으로 이동
+        write= (FloatingActionButton) view.findViewById(R.id.writeButton);
         write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,21 +59,22 @@ public class Frag3 extends Fragment {
         myContext=(FragmentActivity) activity;
         super.onAttach(activity);
     }
+
     //메뉴 설정 함수
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.community_menu, menu);
     }
-    //메뉴 버튼 함수
+
+    //메뉴 버튼 설정 함수
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //글쓰기 버튼 함수
+        //마이페이지 이동 버튼
         switch (item.getItemId()){
-            case R.id.menu_write:
+            case R.id.menu_mypage:
                 Intent intent = new Intent(getActivity(), mypageActivity.class);
                 startActivity(intent);
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }

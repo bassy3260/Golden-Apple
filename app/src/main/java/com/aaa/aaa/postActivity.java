@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,17 +46,12 @@ import static com.aaa.aaa.Util.isStorageUrl;
 
 public class postActivity extends AppCompatActivity {
     private FirebaseFirestore database;
-    private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private commentListViewAdapter adapter;
     private RecyclerView recyclerView;
     private ImageView postImageView;
     private Date comment_time;
-    private String comment_content;
-    private String comment_id;
-    private String comment_uid;
-    private String post_id;
-    private MenuItem postEdit,postDelete;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -84,8 +78,6 @@ public class postActivity extends AppCompatActivity {
         Date created = (Date) getIntent().getSerializableExtra("postCreated");
         TextView TimeTextView = findViewById(R.id.postCreatedTextView);
         TimeTextView.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(created));
-
-
 
         postImageView=(ImageView)findViewById(R.id.postImageView);
         database = FirebaseFirestore.getInstance();
@@ -202,7 +194,6 @@ public class postActivity extends AppCompatActivity {
             postedit.setVisible(true);
             postdelete.setVisible(true);
         }
-
         return true;
     }
 
@@ -243,7 +234,6 @@ public class postActivity extends AppCompatActivity {
                             public void onFailure(@NonNull Exception e) {
                             }
                         });
-
         }
         return true;
     }

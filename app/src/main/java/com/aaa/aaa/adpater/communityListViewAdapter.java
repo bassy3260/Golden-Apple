@@ -36,6 +36,7 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
     private ArrayList<PostInfo> items;
     private Intent intent;
     private OnPostListener onPostListener;
+
     @Override
     public int getItemViewType(int position) {
         return position;
@@ -43,15 +44,8 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
 
     // Adapter 생성자 함수
     public class communityListViewHolder extends RecyclerView.ViewHolder {
-        protected TextView title;
-        protected TextView content;
-        protected TextView time;
-
         public communityListViewHolder(@NonNull View view) {
             super(view);
-            this.title = (TextView) view.findViewById(R.id.listTitleText);
-            this.content = (TextView) view.findViewById(R.id.listContentText);
-            this.time = (TextView) view.findViewById(R.id.listTimeText);
         }
     }
 
@@ -82,12 +76,11 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
                 v.getContext().startActivity(intent);
                 Toast.makeText(v.getContext(), "클릭 되었습니다.", Toast.LENGTH_SHORT).show();
             }
-
         });
         return communityListViewHolder;
     }
 
-    public void setOnPostListener(OnPostListener onPostListener){
+    public void setOnPostListener(OnPostListener onPostListener) {
         this.onPostListener = onPostListener;
     }
 
@@ -102,18 +95,24 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
         for (int i = 0; i < con.size(); i++) {
             String contents = con.get(i);
             if (isStorageUrl(contents)) {
-                listcon += "(이미지) ";
+                if (listcon.length() > 25) {
+                    listcon += "...";
+                    break;
+                } else {
+                    listcon += "(이미지) ";
+                }
             } else {
                 if (contents.contains("\n")) {
-                    contents=contents.replace("\n", " ");
-
-                    if ((listcon + contents).length() > 30) {
-                        listcon = contents.substring(0, 20 - listcon.length())+"...";
-                        break;
-                    } else {
-                        listcon += contents + " ";
-                    }
+                    contents = contents.replace("\n", "");
                 }
+                if ((listcon + contents).length() > 30) {
+                    contents = contents.substring(0,28 - listcon.length()) + "...";
+                    listcon+=contents;
+                    break;
+                } else {
+                    listcon += contents +"";
+                }
+
             }
         }
         content.setText(listcon);

@@ -1,5 +1,6 @@
 package com.aaa.aaa.adpater;
 
+/** 카테고리 ViewPager 어댑터 **/
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,20 +21,17 @@ public class communityPagerAdapter extends FragmentStatePagerAdapter {
     public communityPagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
-
         //카테고리 이름
         name.add("질문·답변");
         name.add("판매");
         name.add("나눔");
         name.add("정보");
         name.add("레시피");
-
     }
 
     //각 프래그먼트 연결
     @Override
     public Fragment getItem(int position) {
-
         switch (position) {
             case 0:
                 community_QnA qnA = new community_QnA();
@@ -50,7 +48,6 @@ public class communityPagerAdapter extends FragmentStatePagerAdapter {
             case 3:
                 community_information information= new community_information();
                 return information;
-
             default:
                 return null;
         }

@@ -155,7 +155,7 @@ public class writeActivity extends AppCompatActivity {
                 // User chose the "Settings" item, show the app settings UI...
                 finish();
                 break;
-            case R.id.menu_write:
+            case R.id.menu_mypage:
                 // User chose the "Settings" item, show the app settings UI...
                 storageUpload();
                 break;

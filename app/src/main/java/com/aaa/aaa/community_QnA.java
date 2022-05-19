@@ -111,8 +111,6 @@ public class community_QnA extends Fragment {
             }
         });
         return v;
-
-
     }
 
 }
