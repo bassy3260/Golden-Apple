@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
     private ArrayList<PostInfo> items;
     private Intent intent;
     private OnPostListener onPostListener;
+
 
     @Override
     public int getItemViewType(int position) {
@@ -129,6 +131,7 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
         } else {
             date.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(items.get(position).getCreated()));
         }
+
 
 
     }

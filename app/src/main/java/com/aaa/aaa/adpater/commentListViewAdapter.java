@@ -5,19 +5,28 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aaa.aaa.R;
+import com.aaa.aaa.Util;
 import com.aaa.aaa.commentInfo;
+import com.aaa.aaa.listener.OnPostListener;
 import com.aaa.aaa.postActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -32,10 +41,14 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
     // 보여줄 Item 목록을 저장할 List
     private ArrayList<commentInfo> items;
     private FirebaseFirestore database;
+    private FirebaseUser user;
     @Override
     public int getItemViewType(int position) {
         return position;
     }
+    private OnPostListener onPostListener;
+
+
 
     // Adapter 생성자 함수
     public class commentListViewHolder extends RecyclerView.ViewHolder {
@@ -56,6 +69,10 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
         this.items = items;
     }
 
+    public void setOnPostListener(OnPostListener onPostListener){
+        this.onPostListener = onPostListener;
+    }
+
     @NonNull
     @Override
     public commentListViewHolder  onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -69,8 +86,8 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
     public void onBindViewHolder(@NonNull commentListViewHolder viewHolder, int position) {
         View holder = viewHolder.itemView;
         TextView comment_name = holder.findViewById(R.id.commentNameText);
-        ImageView commentImageView=(ImageView)holder.findViewById(R.id.commentImageView);
-        String comment_uid=items.get(position).getComment_uid();
+        ImageView commentImageView = (ImageView) holder.findViewById(R.id.commentImageView);
+        String comment_uid = items.get(position).getComment_uid();
         database = FirebaseFirestore.getInstance();
         //FireStore에서 게시글 정보 받아오기
         database.collection("user")
@@ -111,6 +128,25 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
         } else {
             date.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(items.get(position).getComment_time()));
         }
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        ImageButton commentDeleteButton = (ImageButton) holder.findViewById(R.id.commentDeleteButton);
+        if (comment_uid.equals(user.getUid())) {
+            commentDeleteButton.setVisibility(holder.VISIBLE);
+        }
+        String comment_id = (String) items.get(position).getComment_id();
+        commentDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (comment_uid.equals(user.getUid())) {
+                    onPostListener.onDelete(comment_id);
+                    notifyItemChanged(position); //x 표시가 밀리는 현상 고침.
+                }
+                else{
+                    Toast.makeText(v.getContext(), "자신의 댓글만 삭제할 수 있습니다.", Toast.LENGTH_SHORT );
+                }
+            }
+        });
+
     }
 
     @Override

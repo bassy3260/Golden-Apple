@@ -28,18 +28,36 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/default_profile" />
+
             </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/commentNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:maxHeight="25dp"
                 android:paddingLeft="10dp"
                 android:text="(존재하지 않는 회원입니다.)"
                 android:textColor="@color/mr_dynamic_dialog_header_text_color_light"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/commentDeleteButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+
+                    android:background="?android:attr/panelBackground"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/ic_dialog_close_light" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView

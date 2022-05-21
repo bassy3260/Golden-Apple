@@ -15,7 +15,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aaa.aaa.adpater.commentListViewAdapter;
+import com.aaa.aaa.listener.OnPostListener;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,12 +57,13 @@ public class postActivity extends AppCompatActivity {
     private Date comment_time;
     private ArrayList<PostInfo> postInfo;
     private ArrayList<commentInfo> commentList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_postpage);
-        database= FirebaseFirestore.getInstance();
+        database = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         findViewById(R.id.commentWriteButton).setOnClickListener(onClickListener);
         String postKey = (String) getIntent().getSerializableExtra("postpostKey");
@@ -82,7 +86,7 @@ public class postActivity extends AppCompatActivity {
         TextView TimeTextView = findViewById(R.id.postCreatedTextView);
         TimeTextView.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(created));
 
-        postImageView=(ImageView)findViewById(R.id.postImageView);
+        postImageView = (ImageView) findViewById(R.id.postImageView);
         database = FirebaseFirestore.getInstance();
         //FireStore에서 게시글 정보 받아오기
         database.collection("user")
@@ -122,7 +126,7 @@ public class postActivity extends AppCompatActivity {
                     imageView.setLayoutParams(layoutParams);
                     imageView.setAdjustViewBounds(true);
                     imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                    imageView.setPadding(0,0,0,30);
+                    imageView.setPadding(0, 0, 0, 30);
                     contentsLayout.addView(imageView);
                     Glide.with(this).load(contents).override(1000).thumbnail(0.1f).into(imageView);
                 } else {
@@ -130,7 +134,7 @@ public class postActivity extends AppCompatActivity {
                     textView.setLayoutParams(layoutParams);
                     textView.setText(contents);
                     textView.setTextSize(18);
-                    textView.setPadding(0,0,0,30);
+                    textView.setPadding(0, 0, 0, 30);
                     textView.setTextColor(Color.rgb(0, 0, 0));
                     contentsLayout.addView(textView);
                 }
@@ -138,13 +142,15 @@ public class postActivity extends AppCompatActivity {
         }
 
         /** 리사이클러 뷰(게시글 리스트) 생성**/
-        commentList=new ArrayList<>();
-        recyclerView= findViewById(R.id.commentRecyclerView);
+        commentList = new ArrayList<>();
+        adapter = new commentListViewAdapter(postActivity.this, commentList);
+        recyclerView = findViewById(R.id.commentRecyclerView);
         recyclerView.setHasFixedSize(true);
+        adapter.setOnPostListener(onPostListener);
         recyclerView.setLayoutManager(new LinearLayoutManager(postActivity.this));
-        adapter = new commentListViewAdapter(postActivity.this,commentList);
         recyclerView.setAdapter(adapter);
     }
+
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -163,9 +169,9 @@ public class postActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.default_post_menu, menu);
         String uid = (String) getIntent().getSerializableExtra("postUid");
         TextView uidTextView = findViewById(R.id.postUserTextView);
-        MenuItem postedit=menu.findItem(R.id.postEditMenu);
-        MenuItem postdelete=menu.findItem(R.id.postDeleteMenu);
-        if(user.getUid().equals(uid)) {
+        MenuItem postedit = menu.findItem(R.id.postEditMenu);
+        MenuItem postdelete = menu.findItem(R.id.postDeleteMenu);
+        if (user.getUid().equals(uid)) {
             postedit.setVisible(true);
             postdelete.setVisible(true);
         }
@@ -173,13 +179,40 @@ public class postActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         commentUpdate();
     }
 
-    public void scrollDown(){
-        ScrollView scrollView=(ScrollView)findViewById(R.id.postScrollView);
+    OnPostListener onPostListener = new OnPostListener() {
+        @Override
+        public void onDelete(String id) {
+            database.collection("comment").document(id)
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Util.showToast(postActivity.this, "댓글을 삭제하였습니다.");
+                            commentUpdate();
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+        }
+
+        @Override
+        public void onModify(String id) {
+
+        }
+    };
+
+    public void scrollDown() {
+        ScrollView scrollView = (ScrollView) findViewById(R.id.postScrollView);
         scrollView.post(new Runnable() {
             @Override
             public void run() {
@@ -187,6 +220,8 @@ public class postActivity extends AppCompatActivity {
             }
         });
     }
+
+
     //추가된 소스, ToolBar에 추가된 항목의 select 이벤트를 처리하는 함수
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -206,8 +241,8 @@ public class postActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                               toast("게시글이 삭제되었습니다.");
-                               finish();
+                                toast("게시글이 삭제되었습니다.");
+                                finish();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -219,12 +254,12 @@ public class postActivity extends AppCompatActivity {
         return true;
     }
 
-    private void commentUpdate(){
+    private void commentUpdate() {
         String postKey = (String) getIntent().getSerializableExtra("postpostKey");
         CollectionReference collectionReference = database.collection("comment");
         collectionReference
                 // 카테고리에 따라 게시글 받아오기
-                .whereEqualTo("post_id",postKey)
+                .whereEqualTo("post_id", postKey)
                 //시간순 정렬
                 .orderBy("comment_time", Query.Direction.ASCENDING)
                 .get()
