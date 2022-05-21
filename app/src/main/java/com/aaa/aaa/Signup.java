@@ -27,9 +27,9 @@ public class Signup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.sign2);
         mAuth = FirebaseAuth.getInstance();
-
+/*
         //뒤로 가기 버튼
         back = findViewById(R.id.back);
         back.setOnClickListener(v -> onBackPressed());
@@ -56,6 +56,7 @@ public class Signup extends AppCompatActivity {
         submit.setOnClickListener(v -> {
             signup();
         });
+ */
     }
 
     public void signup() {

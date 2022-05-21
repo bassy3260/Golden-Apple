@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.aaa.aaa.adpater.communityListViewAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -27,7 +29,7 @@ public class mypostActivity extends AppCompatActivity {
     private FirebaseFirestore database;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-
+    private ArrayList<PostInfo> postList;
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -35,13 +37,28 @@ public class mypostActivity extends AppCompatActivity {
         firebaseAuth=FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
         /** 리사이클러 뷰(게시글 리스트) 생성 **/
-        final ArrayList<PostInfo> postList = new ArrayList<>();
+        postList = new ArrayList<>();
         database = FirebaseFirestore.getInstance();
+        /* 리사이클러 뷰(게시글 리스트) 생성 */
 
-        //FireStore에서 게시글 정보 받아오기
-        database.collection("post")
-                // 카테고리에 따라 게시글 받아오기
-                .whereEqualTo("uid", user.getUid())
+        adapter= new communityListViewAdapter(mypostActivity.this,postList);
+        recyclerView=findViewById(R.id.mypostRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mypostActivity.this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        postUpdate();
+    }
+
+    private void postUpdate(){
+        firebaseAuth=FirebaseAuth.getInstance();
+        user=firebaseAuth.getCurrentUser();
+        CollectionReference collectionReference = database.collection("post");
+        collectionReference.whereEqualTo("uid", user.getUid())
                 //시간순 정렬
                 .orderBy("created", Query.Direction.DESCENDING)
                 .get()
@@ -49,6 +66,7 @@ public class mypostActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            postList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 postList.add(new PostInfo(
                                         document.getData().get("category").toString(),
@@ -58,13 +76,9 @@ public class mypostActivity extends AppCompatActivity {
                                         (ArrayList<String>) document.getData().get("content"),
                                         document.getData().get("postKey").toString()));
                             }
-                            //리사이클러 뷰 생성
-                            recyclerView = findViewById(R.id.mypostRecyclerView);
-                            recyclerView.setHasFixedSize(true);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(mypostActivity.this));
-                            adapter = new communityListViewAdapter(mypostActivity.this, postList);
-                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged(); //데이터 변경(삭제, 수정 시)
                         } else {
+                            Log.d("로그", "Error getting documents: ", task.getException());
                         }
                     }
                 });

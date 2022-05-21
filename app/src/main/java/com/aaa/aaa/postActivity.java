@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -51,12 +52,14 @@ public class postActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ImageView postImageView;
     private Date comment_time;
-
+    private ArrayList<PostInfo> postInfo;
+    private ArrayList<commentInfo> commentList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_postpage);
+        database= FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         findViewById(R.id.commentWriteButton).setOnClickListener(onClickListener);
         String postKey = (String) getIntent().getSerializableExtra("postpostKey");
@@ -135,41 +138,12 @@ public class postActivity extends AppCompatActivity {
         }
 
         /** 리사이클러 뷰(게시글 리스트) 생성**/
-        final ArrayList<commentInfo> commentList=new ArrayList<>();
-        database= FirebaseFirestore.getInstance();
-
-        //FireStore에서 게시글 정보 받아오기
-        database.collection("comment")
-                // 카테고리에 따라 게시글 받아오기
-                .whereEqualTo("post_id",postKey)
-                //시간순 정렬
-                .orderBy("comment_time", Query.Direction.ASCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                commentList.add(new commentInfo(
-                                        document.getData().get("comment_id").toString(),
-                                        document.getData().get("comment_uid").toString(),
-                                        document.getData().get("comment_content").toString(),
-                                        document.getData().get("post_id").toString(),
-                                        new Date(document.getDate("comment_time").getTime())));
-                            }
-
-                            //리사이클러 뷰 생성
-                            recyclerView= findViewById(R.id.commentRecyclerView);
-                            recyclerView.setHasFixedSize(true);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(postActivity.this));
-                            adapter = new commentListViewAdapter(postActivity.this,commentList);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                        }
-                    }
-                });
-
+        commentList=new ArrayList<>();
+        recyclerView= findViewById(R.id.commentRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(postActivity.this));
+        adapter = new commentListViewAdapter(postActivity.this,commentList);
+        recyclerView.setAdapter(adapter);
     }
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -181,6 +155,7 @@ public class postActivity extends AppCompatActivity {
             }
         }
     };
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //return super.onCreateOptionsMenu(menu);
@@ -195,6 +170,12 @@ public class postActivity extends AppCompatActivity {
             postdelete.setVisible(true);
         }
         return true;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        commentUpdate();
     }
 
     public void scrollDown(){
@@ -238,6 +219,37 @@ public class postActivity extends AppCompatActivity {
         return true;
     }
 
+    private void commentUpdate(){
+        String postKey = (String) getIntent().getSerializableExtra("postpostKey");
+        CollectionReference collectionReference = database.collection("comment");
+        collectionReference
+                // 카테고리에 따라 게시글 받아오기
+                .whereEqualTo("post_id",postKey)
+                //시간순 정렬
+                .orderBy("comment_time", Query.Direction.ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            commentList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                commentList.add(new commentInfo(
+                                        document.getData().get("comment_id").toString(),
+                                        document.getData().get("comment_uid").toString(),
+                                        document.getData().get("comment_content").toString(),
+                                        document.getData().get("post_id").toString(),
+                                        new Date(document.getDate("comment_time").getTime())));
+                            }
+                            adapter.notifyDataSetChanged();
+                            //리사이클러 뷰 생성
+
+                        } else {
+                        }
+                    }
+                });
+    }
+
     private void commentUpload() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         final String comment_content = ((EditText) findViewById(R.id.commentEditText)).getText().toString();
@@ -255,6 +267,8 @@ public class postActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             toast("댓글 업로드 완료");
+                            ((EditText) findViewById(R.id.commentEditText)).setText(null);
+                            commentUpdate();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

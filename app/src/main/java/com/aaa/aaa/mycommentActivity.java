@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,7 +31,7 @@ public class mycommentActivity extends AppCompatActivity {
     private FirebaseFirestore database;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-
+    private ArrayList<commentInfo> commentList;
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -59,12 +60,30 @@ public class mycommentActivity extends AppCompatActivity {
                         }
                     }
                 });
+
         /** 리사이클러 뷰(게시글 리스트) 생성**/
-        final ArrayList<commentInfo> commentList=new ArrayList<>();
+        commentList=new ArrayList<>();
         database= FirebaseFirestore.getInstance();
 
-        //FireStore에서 게시글 정보 받아오기
-        database.collection("comment")
+        //리사이클러 뷰 생성
+        recyclerView= findViewById(R.id.mycommentRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mycommentActivity.this));
+        adapter = new mycommentListViewAdapter(mycommentActivity.this,commentList);
+        recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        commentUpdate();
+    }
+
+    private void commentUpdate(){
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        CollectionReference collectionReference = database.collection("comment");
+        collectionReference
                 // 카테고리에 따라 게시글 받아오기
                 .whereEqualTo("comment_uid",user.getUid())
                 //시간순 정렬
@@ -74,7 +93,7 @@ public class mycommentActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
+                            commentList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 commentList.add(new commentInfo(
                                         document.getData().get("comment_id").toString(),
@@ -94,7 +113,5 @@ public class mycommentActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
     }
 }
