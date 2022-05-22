@@ -43,7 +43,7 @@ public class mypageActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private static final int REQUEST_CODE = 0;
     private ImageView imageView;
-    private Button mypost, mycomment;
+    private Button mypost, mycomment,mypageEdit;
     private TextView name;
     private ArrayList<UserInfo> userinfo;
 
@@ -70,34 +70,6 @@ public class mypageActivity extends AppCompatActivity {
             }
         });
 
-        database.collection("user")
-                // 카테고리에 따라 게시글 받아오기
-                .whereEqualTo("uid", user.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                userinfo.add(new UserInfo(document.getData().get("name").toString(),
-                                        document.getData().get("phone_number").hashCode(),
-                                        document.getData().get("uid").toString(),
-                                        document.getData().get("profile_pic").toString()));
-
-                                name.setText(document.getData().get("name").toString());
-                                if (document.getData().get("profile_pic").toString().equals("null")) {
-                                    imageView.setImageResource(R.drawable.default_profile);
-                                } else {
-                                    String url = document.getData().get("profile_pic").toString();
-                                    Uri file = Uri.parse(url);
-                                    Glide.with(mypageActivity.this).load(url).centerCrop().override(500).into(imageView);
-                                }
-                            }
-                        } else {
-                        }
-                    }
-                });
-
 
         logout = findViewById(R.id.logoutButton);
         logout.setOnClickListener(v -> {
@@ -116,10 +88,18 @@ public class mypageActivity extends AppCompatActivity {
             Intent intent = new Intent(this, mypostActivity.class);
             startActivity(intent);
         });
+
         mycomment = findViewById(R.id.mycommentButton);
         mycomment.setOnClickListener(v -> {
             Intent intent = new Intent(this, mycommentActivity.class);
             startActivity(intent);
+        });
+
+        mypageEdit = findViewById(R.id.mypageEditButton);
+        mypageEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(this, mypageEditActivity.class);
+            startActivity(intent);
+
         });
     }
 
@@ -135,7 +115,6 @@ public class mypageActivity extends AppCompatActivity {
                     StorageReference storageRef = storage.getReference();
                     StorageReference riversRef = storageRef.child("profilephoto/" + user.getUid() + "/profile.jpg");
                     UploadTask uploadTask = riversRef.putFile(file);
-                    Glide.with(mypageActivity.this).load(file).centerCrop().override(500).into(imageView);
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
@@ -163,6 +142,7 @@ public class mypageActivity extends AppCompatActivity {
                                 }
 
                             });
+                            Glide.with(mypageActivity.this).load(file).centerCrop().override(500).into(imageView);
                             toast("업로드 성공");
 
                         }
@@ -187,4 +167,42 @@ public class mypageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onResume(){
+        super.onResume();
+        mypageUpdate();
+    }
+
+    public void mypageUpdate(){
+        database=FirebaseFirestore.getInstance();
+        user=FirebaseAuth.getInstance().getCurrentUser();
+        userinfo=new ArrayList<>();
+        database.collection("user")
+                // 카테고리에 따라 게시글 받아오기
+                .whereEqualTo("uid", user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        userinfo.clear();
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                userinfo.add(new UserInfo(document.getData().get("name").toString(),
+                                        document.getData().get("phone_number").hashCode(),
+                                        document.getData().get("uid").toString(),
+                                        document.getData().get("profile_pic").toString()));
+
+                                name.setText(document.getData().get("name").toString());
+                                if (document.getData().get("profile_pic").toString().equals("null")) {
+                                    imageView.setImageResource(R.drawable.default_profile);
+                                } else {
+                                    String url = document.getData().get("profile_pic").toString();
+                                    Uri file = Uri.parse(url);
+                                    Glide.with(mypageActivity.this).load(url).centerCrop().override(500).into(imageView);
+                                }
+                            }
+                        } else {
+                        }
+                    }
+                });
+    }
 }

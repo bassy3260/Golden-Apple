@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,8 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
-
 
 public class Signup extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -33,8 +30,9 @@ public class Signup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign2);
+        setContentView(R.layout.activity_signup);
         mAuth = FirebaseAuth.getInstance();
+        getSupportActionBar().setTitle("회원 가입");
 
         //기입 항목
         nickname = findViewById(R.id.signUpNickNameEditText);

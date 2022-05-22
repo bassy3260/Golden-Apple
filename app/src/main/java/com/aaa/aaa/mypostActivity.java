@@ -3,6 +3,7 @@ package com.aaa.aaa;
 /** 게시글 리스트 (질문 답변) **/
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,7 @@ public class mypostActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_mypost);
+        getSupportActionBar().setTitle("내가 쓴 글 보기");
         firebaseAuth=FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
         /** 리사이클러 뷰(게시글 리스트) 생성 **/

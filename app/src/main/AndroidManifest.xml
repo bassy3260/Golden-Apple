@@ -16,6 +16,9 @@
         android:theme="@style/Theme.AAA"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".mypageEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".mycommentActivity"
             android:exported="false" />
         <activity

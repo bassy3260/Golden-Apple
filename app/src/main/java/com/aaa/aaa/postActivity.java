@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -57,6 +58,9 @@ public class postActivity extends AppCompatActivity {
     private Date comment_time;
     private ArrayList<PostInfo> postInfo;
     private ArrayList<commentInfo> commentList;
+    private String title,category,uid,postKey;
+    private Date created;
+    private ArrayList<String> contentsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,23 +70,24 @@ public class postActivity extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         findViewById(R.id.commentWriteButton).setOnClickListener(onClickListener);
-        String postKey = (String) getIntent().getSerializableExtra("postpostKey");
-        String category = (String) getIntent().getSerializableExtra("postCategory");
+        postKey = (String) getIntent().getSerializableExtra("postpostKey");
+        category = (String) getIntent().getSerializableExtra("postCategory");
+
         Toolbar tb = (Toolbar) findViewById(R.id.write_toolbar);
         setSupportActionBar(tb);//액션바를 툴바로 바꿔줌
         getSupportActionBar().setTitle(category);
 
-        String uid = (String) getIntent().getSerializableExtra("postUid");
+        uid = (String) getIntent().getSerializableExtra("postUid");
         TextView uidTextView = findViewById(R.id.postUserTextView);
 
         Log.e("로그", "url:" + postKey);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        String title = (String) getIntent().getSerializableExtra("postTitle");
+        title = (String) getIntent().getSerializableExtra("postTitle");
         TextView titleTextView = findViewById(R.id.postTitleTextView);
         titleTextView.setText(title);
 
-        Date created = (Date) getIntent().getSerializableExtra("postCreated");
+        created = (Date) getIntent().getSerializableExtra("postCreated");
         TextView TimeTextView = findViewById(R.id.postCreatedTextView);
         TimeTextView.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(created));
 
@@ -114,7 +119,7 @@ public class postActivity extends AppCompatActivity {
                 });
         LinearLayout contentsLayout = findViewById(R.id.postcontentsLayout);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ArrayList<String> contentsList = (ArrayList<String>) getIntent().getSerializableExtra("postContent");
+        contentsList = (ArrayList<String>) getIntent().getSerializableExtra("postContent");
 
         if (contentsLayout.getTag() == null || !contentsLayout.getTag().equals(contentsList)) {
             contentsLayout.setTag(contentsList);
@@ -169,10 +174,8 @@ public class postActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.default_post_menu, menu);
         String uid = (String) getIntent().getSerializableExtra("postUid");
         TextView uidTextView = findViewById(R.id.postUserTextView);
-        MenuItem postedit = menu.findItem(R.id.postEditMenu);
         MenuItem postdelete = menu.findItem(R.id.postDeleteMenu);
         if (user.getUid().equals(uid)) {
-            postedit.setVisible(true);
             postdelete.setVisible(true);
         }
         return true;
@@ -206,8 +209,11 @@ public class postActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onModify(String id) {
-
+        public void onModify() {
+            String id= (String) getIntent().getSerializableExtra("postpostKey");
+            Intent intent = new Intent(postActivity.this, postActivity.class);
+            intent.putExtra("postInfo", postInfo);
+            startActivity(intent);
         }
     };
 
@@ -230,8 +236,6 @@ public class postActivity extends AppCompatActivity {
             case android.R.id.home:
                 // User chose the "Settings" item, show the app settings UI...
                 finish();
-                break;
-            case R.id.postEditMenu:
                 break;
             case R.id.postDeleteMenu:
                 String post_id = (String) getIntent().getSerializableExtra("postpostKey");
