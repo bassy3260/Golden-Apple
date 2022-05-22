@@ -2,6 +2,9 @@ package com.aaa.aaa;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,61 +15,73 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Text;
+
 
 public class Signup extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    TextView back;
-    EditText name, id, pw, pw2, email, phone_number;
-    Button pwcheck, submit;
+    TextView pwcheckText;
+    EditText nickname, id, pw, pwcheck, email, phone_number;
+    Button submit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign2);
         mAuth = FirebaseAuth.getInstance();
-/*
-        //뒤로 가기 버튼
-        back = findViewById(R.id.back);
-        back.setOnClickListener(v -> onBackPressed());
 
         //기입 항목
-        name = findViewById(R.id.signName);
-        pw = findViewById(R.id.signPW);
-        pw2 = findViewById(R.id.signPWtest);
-        email = findViewById(R.id.signmail);
-        phone_number = findViewById(R.id.signPhonenumber);
-
-        //비밀번호 확인 버튼
-        pwcheck = findViewById(R.id.pwcheckbutton);
-        pwcheck.setOnClickListener(v -> {
-            if (pw.getText().toString().equals(pw2.getText().toString())) {
-                pwcheck.setText("일치");
-            } else {
-                Toast.makeText(Signup.this, "비밀번호가 다릅니다.", Toast.LENGTH_LONG).show();
-            }
-        });
+        nickname = findViewById(R.id.signUpNickNameEditText);
+        pw = findViewById(R.id.signUpPasswordEditText);
+        pwcheck = findViewById(R.id.signUpPasswordCheckEditText);
+        email = findViewById(R.id.signUpEmailEditText);
+        phone_number = findViewById(R.id.signUpPhoneNumberEditText);
 
         //회원가입 완료 버튼
-        submit = findViewById(R.id.signupbutton);
+        submit = findViewById(R.id.signUpButton);
         submit.setOnClickListener(v -> {
             signup();
         });
- */
+
+        // 비밀번호 확인
+        final TextInputLayout pwcheckLabel = (TextInputLayout) findViewById(R.id.pwcheckLabel);
+        pwcheck.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (pwcheck.getText().toString().equals(pw.getText().toString())==false) {
+                    pwcheckLabel.setError("비밀번호가 일치하지 않습니다.");
+                } else {
+                    pwcheckLabel.setErrorEnabled(false);
+                }
+
+            }
+        });
     }
+
 
     public void signup() {
         //가입 정보 가져오기
         mAuth = FirebaseAuth.getInstance();
-        String email = ((EditText) findViewById(R.id.signmail)).getText().toString().trim();
-        String password = ((EditText) findViewById(R.id.signPW)).getText().toString().trim();
-        String name = ((EditText) findViewById(R.id.signName)).getText().toString().trim();
-        String passwordtest = ((EditText) findViewById(R.id.signPWtest)).getText().toString().trim();
-        String phone_number = ((EditText) findViewById(R.id.signPhonenumber)).getText().toString().trim();
+        String email = ((EditText) findViewById(R.id.signUpEmailEditText)).getText().toString().trim();
+        String password = ((EditText) findViewById(R.id.signUpPasswordEditText)).getText().toString().trim();
+        String name = ((EditText) findViewById(R.id.signUpNickNameEditText)).getText().toString().trim();
+        String passwordtest = ((EditText) findViewById(R.id.signUpPasswordCheckEditText)).getText().toString().trim();
+        String phone_number = ((EditText) findViewById(R.id.signUpPhoneNumberEditText)).getText().toString().trim();
 
 
         if (email.length() > 0 && password.length() > 0 && passwordtest.length() > 0
