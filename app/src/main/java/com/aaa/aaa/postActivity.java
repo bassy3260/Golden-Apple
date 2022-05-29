@@ -1,11 +1,13 @@
 package com.aaa.aaa;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -238,22 +240,39 @@ public class postActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.postDeleteMenu:
-                String post_id = (String) getIntent().getSerializableExtra("postpostKey");
-                database = FirebaseFirestore.getInstance();
-                database.collection("post").document(post_id)
-                        .delete()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                toast("게시글이 삭제되었습니다.");
-                                finish();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                            }
-                        });
+                AlertDialog.Builder builder = new AlertDialog.Builder(postActivity.this);
+                builder.setTitle("게시물 삭제");
+                builder.setMessage("게시물을 삭제하시겠습니까?");
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    public void onClick(
+                            DialogInterface dialog, int id) {
+                        String post_id = (String) getIntent().getSerializableExtra("postpostKey");
+                        database = FirebaseFirestore.getInstance();
+                        database.collection("post").document(post_id)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        toast("게시글이 삭제되었습니다.");
+                                        finish();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        toast("게시글 삭제 실패");
+                                    }
+                                });
+                    }
+                });
+                builder.setNegativeButton("취소",  new DialogInterface.OnClickListener() {
+                    public void onClick(
+                            DialogInterface dialog, int id) {
+
+                    }
+                });
+                builder.create().show();
+
         }
         return true;
     }

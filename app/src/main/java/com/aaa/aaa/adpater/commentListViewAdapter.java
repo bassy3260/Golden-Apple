@@ -1,6 +1,7 @@
 package com.aaa.aaa.adpater;
 
 /** 게시글 리사이클러뷰 어댑터 **/
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -137,13 +139,29 @@ public class commentListViewAdapter extends RecyclerView.Adapter<commentListView
         commentDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (comment_uid.equals(user.getUid())) {
-                    onPostListener.onDelete(comment_id);
-                    notifyItemChanged(position); //x 표시가 밀리는 현상 고침.
-                }
-                else{
-                    Toast.makeText(v.getContext(), "자신의 댓글만 삭제할 수 있습니다.", Toast.LENGTH_SHORT );
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(holder.getContext());
+                builder.setTitle("댓글 삭제");
+                builder.setMessage("댓글을 삭제하시겠습니까?");
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    public void onClick(
+                            DialogInterface dialog, int id) {
+                        if (comment_uid.equals(user.getUid())) {
+                            onPostListener.onDelete(comment_id);
+                            notifyItemChanged(position); //x 표시가 밀리는 현상 고침.
+                        }
+                        else{
+                            Toast.makeText(v.getContext(), "자신의 댓글만 삭제할 수 있습니다.", Toast.LENGTH_SHORT );
+                        }
+                    }
+                });
+                builder.setNegativeButton("취소",  new DialogInterface.OnClickListener() {
+                    public void onClick(
+                            DialogInterface dialog, int id) {
+
+                    }
+                });
+                builder.create().show();
+
             }
         });
 

@@ -38,7 +38,7 @@ public class mycommentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mycomment);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        getSupportActionBar().setTitle("내가 쓴 댓글 보기");
+        getSupportActionBar().setTitle("내가 작성한 댓글");
         final ArrayList<PostInfo> postList = new ArrayList<>();
         final ArrayList<String> postIdList = new ArrayList<>();
         database = FirebaseFirestore.getInstance();

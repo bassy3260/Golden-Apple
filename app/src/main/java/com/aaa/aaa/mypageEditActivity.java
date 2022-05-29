@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +39,7 @@ public class mypageEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_edit);
-        getSupportActionBar().setTitle("내 정보 수정");
+        getSupportActionBar().setTitle("회원 정보 수정");
 
         firebaseAuth=FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
@@ -74,11 +75,8 @@ public class mypageEditActivity extends AppCompatActivity {
                         Util.showToast(mypageEditActivity.this,"전화번호는 숫자만 입력해주세요");
                     }else{
                         mypageEdit();
+
                         finish();
-
-
-
-
                     }
 
                 }else{
@@ -94,10 +92,9 @@ public class mypageEditActivity extends AppCompatActivity {
         String name= ((EditText) findViewById(R.id.mypageNickNameEditText)).getText().toString().trim();
         String phone_num= ((EditText) findViewById(R.id.mypagePhoneNumberEditText)).getText().toString().trim();
         int phone_number = Integer.parseInt(phone_num);
-
-
         database=FirebaseFirestore.getInstance();
-
+        final RelativeLayout loaderLayout =findViewById(R.id.loaderLayout);
+        loaderLayout.setVisibility(View.VISIBLE);
         database=FirebaseFirestore.getInstance();
         database.collection("user")
                 // 카테고리에 따라 게시글 받아오기
@@ -113,8 +110,12 @@ public class mypageEditActivity extends AppCompatActivity {
                                         document.getData().get("uid").toString(),
                                         document.getData().get("profile_pic").toString());
                                 database.collection("user").document(user.getUid()).set(userInfo);
+                                loaderLayout.setVisibility(View.GONE);
+                                Util.showToast(mypageEditActivity.this,"회원 정보 수정 완료");
                             }
                         } else {
+                            loaderLayout.setVisibility(View.GONE);
+                            Util.showToast(mypageEditActivity.this,"회원 정보 수정 실패");
                         }
                     }
                 });

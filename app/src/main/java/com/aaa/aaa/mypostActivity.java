@@ -35,7 +35,7 @@ public class mypostActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_mypost);
-        getSupportActionBar().setTitle("내가 쓴 글 보기");
+        getSupportActionBar().setTitle("내가 작성한 글");
         firebaseAuth=FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
         /** 리사이클러 뷰(게시글 리스트) 생성 **/

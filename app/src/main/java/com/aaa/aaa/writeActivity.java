@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -88,7 +89,9 @@ public class writeActivity extends AppCompatActivity {
         ArrayAdapter categoryAdapter = ArrayAdapter.createFromResource(this,
                 R.array.category_array, android.R.layout.simple_spinner_item);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         categorySpinner.setAdapter(categoryAdapter);
+
 
         findViewById(R.id.addimageButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +103,7 @@ public class writeActivity extends AppCompatActivity {
             }
         });
     }
+
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -237,6 +241,8 @@ public class writeActivity extends AppCompatActivity {
 
     /* 게시글 업로드 함수 */
     private void storageUpload() {
+        final RelativeLayout loaderLayout =findViewById(R.id.loaderLayout);
+
         //FireBase user 정보 가져오기
         user = FirebaseAuth.getInstance().getCurrentUser();
         //타이틀
@@ -256,91 +262,96 @@ public class writeActivity extends AppCompatActivity {
         String postkey=postRef.getId(); // 게시글 아이디 가져오기
 
         ArrayList<String> contentList = new ArrayList<>();
-
-        if (title.length() > 0) {
-            for (int i = 0; i < parent.getChildCount(); i++) {
-                LinearLayout linearLayout = (LinearLayout) parent.getChildAt(i);
-                for(int j=0;j<linearLayout.getChildCount();j++){
-                    View view=linearLayout.getChildAt(j);
-                    // EditText 읽기
-                    if (view instanceof EditText) {
-                        String text = ((EditText)view).getText().toString();
-                        if (text.length() > 0) {
-                            contentList.add(text);
-                        }
-                        // 사진 읽기
-                    } else {
-                        contentList.add(partList.get(partCount));
-                        StorageReference riversRef = storageRef.child("post/" + postRef.getId() + "/" + (contentList.size() - 1) + ".jpg");
-                        try {
-                            //Storage에 사진 업로드
-                            String url = partList.get(partCount);
-                            Uri file = Uri.parse(url);
-                            StorageMetadata metadata = new StorageMetadata.Builder()
-                                    .setCustomMetadata("index", "" + (contentList.size() - 1)).build();
-                            UploadTask uploadTask = riversRef.putFile(file, metadata);
-                            uploadTask.addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                }
-                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    final int index = Integer.parseInt(taskSnapshot.getMetadata().getCustomMetadata("index"));
-                                    riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            Log.e("로그", "url:" + uri);
-                                            contentList.set(index, uri.toString());
-                                            successCount++;
-                                            Log.e("로그", contentList.get(1));
-                                            if (partList.size() == successCount) {
-                                                PostInfo PostInfo = new PostInfo(category, title, u_id, created, contentList,postkey);
-                                                postRef.set(PostInfo)
-                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
-                                                                toast("글 업로드 완료");
-                                                            }
-                                                        })
-                                                        .addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                toast("글 업로드 실패");
-                                                            }
-                                                        });
-                                                finish();
+        if(category.equals("카테고리를 선택하세요.")==false) {
+            if (title.length() > 0) {
+                loaderLayout.setVisibility(View.VISIBLE);
+                for (int i = 0; i < parent.getChildCount(); i++) {
+                    LinearLayout linearLayout = (LinearLayout) parent.getChildAt(i);
+                    for (int j = 0; j < linearLayout.getChildCount(); j++) {
+                        View view = linearLayout.getChildAt(j);
+                        // EditText 읽기
+                        if (view instanceof EditText) {
+                            String text = ((EditText) view).getText().toString();
+                            if (text.length() > 0) {
+                                contentList.add(text);
+                            }
+                            // 사진 읽기
+                        } else {
+                            contentList.add(partList.get(partCount));
+                            StorageReference riversRef = storageRef.child("post/" + postRef.getId() + "/" + (contentList.size() - 1) + ".jpg");
+                            try {
+                                //Storage에 사진 업로드
+                                String url = partList.get(partCount);
+                                Uri file = Uri.parse(url);
+                                StorageMetadata metadata = new StorageMetadata.Builder()
+                                        .setCustomMetadata("index", "" + (contentList.size() - 1)).build();
+                                UploadTask uploadTask = riversRef.putFile(file, metadata);
+                                uploadTask.addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                    }
+                                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        final int index = Integer.parseInt(taskSnapshot.getMetadata().getCustomMetadata("index"));
+                                        riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                Log.e("로그", "url:" + uri);
+                                                contentList.set(index, uri.toString());
+                                                successCount++;
+                                                Log.e("로그", contentList.get(1));
+                                                if (partList.size() == successCount) {
+                                                    PostInfo PostInfo = new PostInfo(category, title, u_id, created, contentList, postkey);
+                                                    postRef.set(PostInfo)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+                                                                    loaderLayout.setVisibility(View.GONE);
+                                                                    toast("글 업로드 완료");
+                                                                }
+                                                            })
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    toast("글 업로드 실패");
+                                                                }
+                                                            });
+                                                    finish();
+                                                }
                                             }
-                                        }
-                                    });
-                                }
-                            });
-                        } catch (Exception e) {
+                                        });
+                                    }
+                                });
+                            } catch (Exception e) {
+                            }
+                            partCount++;
                         }
-                        partCount++;
                     }
                 }
+                // 이미지가 없을 시
+                if (partList.size() == 0) {
+                    PostInfo PostInfo = new PostInfo(category, title, u_id, created, contentList, postkey);
+                    postRef.set(PostInfo)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    toast("글 업로드 완료");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    toast("글 업로드 실패");
+                                }
+                            });
+                    finish();
+                }
+            } else {
+                toast("제목이 비어있습니다!");
             }
-            // 이미지가 없을 시
-            if(partList.size()==0){
-                PostInfo PostInfo = new PostInfo(category, title, u_id, created, contentList,postkey);
-                postRef.set(PostInfo)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                toast("글 업로드 완료");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                toast("글 업로드 실패");
-                            }
-                        });
-                finish();
-            }
-        } else {
-            toast("제목이 비어있습니다!");
+        }else{
+            toast("카테고리를 선택해주세요.");
         }
     }
 

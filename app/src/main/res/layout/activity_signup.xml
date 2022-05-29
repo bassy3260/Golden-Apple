@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 
 
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
@@ -102,6 +103,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/pwLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/EditScreenTextInputLayoutStyle"
@@ -115,7 +117,7 @@
                 android:drawableEnd="@drawable/ic_lock_white_24dp"
                 android:drawablePadding="16dp"
                 android:fontFamily="@font/calibri"
-                android:hint="비밀번호"
+                android:hint="비밀번호(6자 이상)"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:textColor="@android:color/black"
@@ -204,5 +206,10 @@
             android:textSize="14sp" />
     </LinearLayout>
 
+    <include
+        layout="@layout/view_loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </RelativeLayout>
