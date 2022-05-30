@@ -22,8 +22,8 @@ public class communityPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
         //카테고리 이름
-        name.add("질문·답변");
-        name.add("판매");
+        name.add("질문");
+        name.add("홍보·판매");
         name.add("나눔");
         name.add("정보");
         name.add("레시피");
