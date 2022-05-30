@@ -1,5 +1,6 @@
 package com.aaa.aaa;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -70,16 +72,29 @@ public class mypageActivity extends AppCompatActivity {
             }
         });
 
-
+        //로그아웃 버튼
         logout = findViewById(R.id.logoutButton);
         logout.setOnClickListener(v -> {
-            mAuth.signOut();
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            AlertDialog.Builder builder = new AlertDialog.Builder(mypageActivity.this);
+            builder.setTitle("로그아웃");
+            builder.setMessage("로그아웃 하시겠습니까?");
+            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                public void onClick(
+                        DialogInterface dialog, int id) {
+                    mAuth.signOut();
+                    Intent intent = new Intent(mypageActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton("취소",  new DialogInterface.OnClickListener() {
+                public void onClick(
+                        DialogInterface dialog, int id) {
 
-            toast("로그아웃에 성공하였습니다.");
+                }
+            });
+            builder.create().show();
         });
 
 
