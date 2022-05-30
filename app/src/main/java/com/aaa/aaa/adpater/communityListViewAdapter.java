@@ -76,7 +76,6 @@ public class communityListViewAdapter extends RecyclerView.Adapter<communityList
                     Log.e("로그", "url:" + iter.next());
                 }
                 v.getContext().startActivity(intent);
-                Toast.makeText(v.getContext(), "클릭 되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
         return communityListViewHolder;

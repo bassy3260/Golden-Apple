@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +39,6 @@ import java.util.ArrayList;
 public class mypageActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     Button logout;
-    private View view;
-    private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private FirebaseFirestore database;
     private FirebaseStorage storage;
@@ -86,6 +85,7 @@ public class mypageActivity extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+                    toast("로그아웃에 성공하였습니다.");
                 }
             });
             builder.setNegativeButton("취소",  new DialogInterface.OnClickListener() {
@@ -124,6 +124,8 @@ public class mypageActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
+                    final RelativeLayout loaderLayout =findViewById(R.id.loaderLayout);
+                    loaderLayout.setVisibility(View.VISIBLE);
                     final DocumentReference userRef = database.collection("user").document(user.getUid());
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     Uri file = data.getData();
@@ -133,6 +135,7 @@ public class mypageActivity extends AppCompatActivity {
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
+                            loaderLayout.setVisibility(View.GONE);
                             toast("업로드 실패");
                         }
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -147,18 +150,22 @@ public class mypageActivity extends AppCompatActivity {
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
+                                                    loaderLayout.setVisibility(View.GONE);
+                                                    Glide.with(mypageActivity.this).load(file).centerCrop().override(500).into(imageView);
+                                                    toast("업로드 성공");
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
+                                                    loaderLayout.setVisibility(View.GONE);
+                                                    toast("업로드 실패");
                                                 }
                                             });
                                 }
 
                             });
-                            Glide.with(mypageActivity.this).load(file).centerCrop().override(500).into(imageView);
-                            toast("업로드 성공");
+
 
                         }
                     });

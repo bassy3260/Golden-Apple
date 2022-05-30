@@ -1,9 +1,8 @@
 package com.aaa.aaa;
 
-/** 게시글 리스트 (질문 답변) **/
+/* 게시글 리스트 (질문 답변) **/
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 

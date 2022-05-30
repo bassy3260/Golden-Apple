@@ -88,7 +88,7 @@ public class mycommentListViewAdapter extends RecyclerView.Adapter<mycommentList
                                         intent.putExtra("postpostKey", document.getData().get("postKey").toString());
                                         intent.putExtra("postTitle", document.getData().get("title").toString());
                                         v.getContext().startActivity(intent);
-                                        Toast.makeText(v.getContext(), "클릭 되었습니다.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(v.getContext(), "게시물로 이동하였습니다..", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
                                 }

@@ -42,6 +42,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class postActivity extends AppCompatActivity {
     private Date comment_time;
     private ArrayList<PostInfo> postInfo;
     private ArrayList<commentInfo> commentList;
-    private String title,category,uid,postKey;
+    private String title, category, uid, postKey;
     private Date created;
     private ArrayList<String> contentsList;
 
@@ -210,13 +212,6 @@ public class postActivity extends AppCompatActivity {
                     });
         }
 
-        @Override
-        public void onModify() {
-            String id= (String) getIntent().getSerializableExtra("postpostKey");
-            Intent intent = new Intent(postActivity.this, postActivity.class);
-            intent.putExtra("postInfo", postInfo);
-            startActivity(intent);
-        }
     };
 
     public void scrollDown() {
@@ -265,14 +260,13 @@ public class postActivity extends AppCompatActivity {
                                 });
                     }
                 });
-                builder.setNegativeButton("취소",  new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     public void onClick(
                             DialogInterface dialog, int id) {
 
                     }
                 });
                 builder.create().show();
-
         }
         return true;
     }
