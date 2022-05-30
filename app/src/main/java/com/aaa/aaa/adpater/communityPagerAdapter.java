@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class communityPagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
-    private ArrayList<String> name = new ArrayList<>();
+    private final ArrayList<String> name = new ArrayList<>();
 
     public communityPagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
